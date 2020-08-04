@@ -5,8 +5,8 @@
   $ErrorEmail = $ErrorPassword = $ErrorMessage1 = $ErrorMessage2 = "";
 
   if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    $Email = $_POST["Email"];;
-    $Password = $_POST["Password"];;
+    $Email = $_POST["Email"];
+    $Password = $_POST["Password"];
     $FirstName = $_POST["FirstName"];
     $LastName = $_POST["LastName"];
 
@@ -15,12 +15,12 @@
       $ErrorEmail = "Email is required.";
     }
     else {
-        if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
-          $ErrorEmail = "Invalid Email format."; 
-        }
-        else{
-          $Valid1 = $Email;
-        }
+      if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
+        $ErrorEmail = "Invalid Email format."; 
+      }
+      else{
+        $Valid1 = $Email;
+      }
     }
 
     //Password verification
@@ -30,14 +30,8 @@
     else{
       $Valid2 = $Password;
     }
-
-    //To enter website once login is successful
-    if (!(isset($Valid1)) and  !(isset($Valid2))){
-        $ErrorMessage1 = " Please try again."; 
-        $ErrorMessage2 = " Please try again.";
-    }
    
-    //Adds values to user_account table
+    //Adds values to database
     if (!empty($Valid1) and !empty($Valid2)){
       $sql = "INSERT INTO user_account (email, password, first_name, last_name)
               VALUES ('$Valid1','$Valid2','$FirstName','$LastName');
