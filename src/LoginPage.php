@@ -1,8 +1,6 @@
+<?php require 'DatabaseConnection.php'; ?>
+
 <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "";                                                      //put your mysql server password to connect [and this is password with small p]
-        $dbname = "login";                                                             // whatever you do make sure you create a database named login and table named UserInfo
         $Password = "";
         $ErrorPass = "";
         $Email = "";
@@ -11,16 +9,6 @@
         $Valid2 = "";
         $ErrorMessage1 = "";
         $ErrorMessage2 = "";
-
-
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        } 
-        echo "Connected successfully";                                   // use only as print to make sure connection is made successfully, to be commented out on final version
 
         if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -86,13 +74,10 @@
               <input type="Password" placeholder="Password" name="Password" />
               <input class="button" type="submit" name="submit" value="Login" />
               <p class="message">Not registered? <a href="CreatePage.php">Create an account</a></p>             <!-- Need to make html page for creation of user account/-->
-
-
-                <?php
-                  $conn->close();                                                                               //at the end of program end connection to mysql database server
-                ?>
             </form>
           </div>
         </div>
       </body>
   </html>
+
+<?php require 'DatabaseDisconnection.php'; ?>

@@ -1,61 +1,66 @@
 <?php require 'DatabaseConnection.php'; ?>
 
 <?php
-        $Password = "";
-        $ErrorPass = "";
-        $Email = "";
-        $ErrorEmail = "";
-        $Valid1 = "";
-        $Valid2 = "";
-        $ErrorMessage1 = "";
-        $ErrorMessage2 = "";
+  $Valid1 = $Valid2 = "";
+  $ErrorEmail = $ErrorPassword = $ErrorMessage1 = $ErrorMessage2 = "";
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST"){
+  if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    $Email = $_POST["Email"];;
+    $Password = $_POST["Password"];;
+    $FirstName = $_POST["FirstName"];
+    $LastName = $_POST["LastName"];
 
-          if (empty($_POST["Email"])){
-            $ErrorEmail = "Email is required.";
-          }
-          else {
-            $Email = $_POST["Email"];
-              if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
-                $ErrorEmail = "Invalid Email format."; 
-              }
-              else{
-                $Valid1 = $Email;
-              }
-          }
-
-          if (empty($_POST["Password"])){
-            $ErrorPass = "Password is required.";
-          }
-          else{
-            $Password = $_POST["Password"];
-              if (!preg_match("/(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*(){\|}~_']*$/",$Password)){   //kept same password requirements as assignment
-                $ErrorPass = "Invalid Password format.";
-              }  
-              else {
-                $Valid2 = $Password;
-              }
-          }
-
-            if (!(isset($Valid1)) and  !(isset($Valid2))){                                                         // to enter website once login is successfull
-              $ErrorMessage1 = " Please try again."; 
-              $ErrorMessage2 = " Please try again.";
-            }
-                   
-                if (!empty($Valid1) and !empty($Valid2)){
-                 $sql = "INSERT INTO UserInfo (Email, Password)
-                  VALUES ('$Valid1','$Valid2')";              //php code to be added from account creation html page
-
-                  if ($conn->query($sql) === TRUE) {
-                      echo "New record created successfully";            // use only as print to make sure connection is made successfully, to be commented out on final version
-                  } else {
-                      echo "Error: " . $sql . "<br>" . $conn->error;    // use only as print to make sure connection is made successfully, to be commented out on final version
-                  }
-                  header("Location: LoginPage.php");
-                }
-
+    //Email verification
+    if (empty($_POST["Email"])){
+      $ErrorEmail = "Email is required.";
+    }
+    else {
+        if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
+          $ErrorEmail = "Invalid Email format."; 
         }
+        else{
+          $Valid1 = $Email;
+        }
+    }
+
+    //Password verification
+    if (empty($_POST["Password"])){
+      $ErrorPassword = "Password is required.";
+    }
+    else{
+      $Valid2 = $Password;
+    }
+
+    //To enter website once login is successful
+    if (!(isset($Valid1)) and  !(isset($Valid2))){
+        $ErrorMessage1 = " Please try again."; 
+        $ErrorMessage2 = " Please try again.";
+    }
+   
+    //Adds values to user_account table
+    if (!empty($Valid1) and !empty($Valid2)){
+      $sql = "INSERT INTO user_account (email, password, first_name, last_name)
+              VALUES ('$Valid1','$Valid2','$FirstName','$LastName');
+              INSERT INTO suffering_account (sa_ID)
+              SELECT user_ID
+              FROM user_account
+              WHERE email = '$Valid1' AND password = '$Valid2';
+              UPDATE user_account
+              SET sa_ID = user_ID
+              WHERE email = '$Valid1' AND password = '$Valid2';
+              INSERT INTO employee (user_ID)
+              SELECT user_ID
+              FROM user_account
+              WHERE email = '$Valid1' AND password = '$Valid2';";
+
+      try {
+        $conn->exec($sql);
+      } catch(PDOException $e) {
+        echo $sql . "<br>" . $e->getMessage();
+      }
+      header("Location: LoginPage.php");
+    }
+  }
 ?>
 
 <!DOCTYPE html>
@@ -73,9 +78,11 @@
           <div class="form">
             <form class="login-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
               <span class="error"><?php echo $ErrorEmail, $ErrorMessage1;?></span>
-              <input type="Email" placeholder="Email" name="Email" />
-              <span class="error"><?php echo $ErrorPass, $ErrorMessage2;?></span>
-              <input type="Password" placeholder="Password" name="Password" />
+              <input type="email" placeholder="Email" name="Email" />
+              <span class="error"><?php echo $ErrorPassword, $ErrorMessage2;?></span>
+              <input type="password" placeholder="Password" name="Password" />
+              <input type="text" placeholder="First Name" name="FirstName" />
+              <input type="text" placeholder="Last Name" name="LastName" />
               <input class="button" type="submit" name="submit" value="Create" />                         
             </form>
           </div>
