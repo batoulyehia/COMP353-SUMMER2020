@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="../includes/bootstrap/css/bootstrap.min.css" />
     </head>
     <body>
-        <div style="width: fit-content;">
+        <div style="width: fit-content; margin: 10vh">
         <h2 style="margin-bottom:20px;">View New Employees</h2>
             <!-- have to sort by NEWEST --> 
             <table class="table">
