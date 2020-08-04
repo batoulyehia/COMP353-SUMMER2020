@@ -1,3 +1,23 @@
+CREATE TABLE administrator (
+	email varchar(100),
+	first_name varchar(45),
+	last_name varchar(45),
+password varchar(45),
+	primary key(email)
+);
+
+
+
+CREATE TABLE deactivate (
+admin_email varchar(100),
+user_ID int(11),
+foreign key(admin_email) references administrator(email),
+foreign key(user_ID) references user_account(user_ID)
+);
+
+
+
+
 CREATE TABLE suffering_account (
 sa_ID integer,
 sa_status varchar(100) DEFAULT 'non-suffering',
@@ -31,3 +51,93 @@ employer_membership_type varchar(100) DEFAULT 'prime',
 PRIMARY KEY (user_ID),
 FOREIGN KEY (user_ID) REFERENCES user_account(user_ID)
 );
+
+CREATE TABLE payment_method(
+id_ref integer,
+user_ID integer, 
+selected boolean default 1,
+payment_type varchar(100) default 'manual',
+primary key(id_ref),
+foreign key(user_ID) references user_account(user_ID)
+);
+
+
+CREATE TABLE credit_card (
+card_number varchar(45), 
+id_ref varchar(45), 
+cvc varchar(45),
+credit_card_name varchar(100),
+exp_date date, 
+primary key(card_number),
+foreign key(id_ref) references payment_method(id_ref)
+);
+
+CREATE TABLE checking_account (
+bank_account_num varchar(45), 
+id_ref varchar(45), 
+name_of_assoc_acct varchar(100), 
+primary key(bank_account_num),
+foreign key(id_ref) references payment_method(id_ref)
+);
+
+
+CREATE TABLE category(
+category_name varchar(100),
+user_ID integer,
+primary key(category_name),
+foreign key(user_ID) references user_account(user_ID)
+);
+
+CREATE TABLE job (
+job_ID integer,
+category_name varchar(100),
+user_ID integer,
+num_of_workers_needed integer,
+date_posted date,
+job_title varchar(100),
+job_status varchar(100) default 'open',
+job_description varchar(5000), 
+PRIMARY KEY (job_ID),
+FOREIGN KEY (category_name) REFERENCES category(category_name),
+FOREIGN KEY (user_ID) REFERENCES employer(user_ID)
+);
+
+CREATE TABLE updates (
+employee_user_ID integer,
+employer_user_ID integer,
+primary key(employee_user_ID,employer_user_ID),
+foreign key(employee_user_ID) references employee(user_ID),
+foreign key(employer_user_ID) references employer(user_ID)
+);
+
+
+CREATE TABLE give_offer(
+employee_user_ID integer,
+employer_user_ID integer,
+job_ID integer,
+primary key(employee_user_ID,employer_user_ID,job_ID),
+foreign key(employee_user_ID) references employee(user_ID),
+foreign key(employer_user_ID) references employer(user_ID),
+foreign key(job_ID) references job(job_ID)
+);
+
+
+CREATE TABLE choose (
+user_ID integer,
+category_name varchar(100),
+primary key(employee_user_ID,category_name),
+foreign key(employee_user_ID) references employee(user_ID),
+foreign key(category_name) references category(category_name)
+);
+
+CREATE TABLE apply(
+employee_user_ID integer,
+job_ID integer,
+app_status varchar(100) default 'pending',
+date_applied date,
+primary key(employee_user_ID,job_ID),
+foreign key(employee_user_ID) references employee(user_ID),
+foreign key(job_ID) references job(job_ID)
+);
+
+
