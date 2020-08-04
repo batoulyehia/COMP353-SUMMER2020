@@ -1,22 +1,10 @@
 CREATE TABLE administrator (
-	email varchar(100),
-	first_name varchar(45),
-	last_name varchar(45),
+email varchar(100),
+first_name varchar(45),
+last_name varchar(45),
 password varchar(45),
-	primary key(email)
+PRIMARY KEY (email)
 );
-
-
-
-CREATE TABLE deactivate (
-admin_email varchar(100),
-user_ID int(11),
-foreign key(admin_email) references administrator(email),
-foreign key(user_ID) references user_account(user_ID)
-);
-
-
-
 
 CREATE TABLE suffering_account (
 sa_ID integer,
@@ -52,7 +40,7 @@ PRIMARY KEY (user_ID),
 FOREIGN KEY (user_ID) REFERENCES user_account(user_ID)
 );
 
-CREATE TABLE payment_method(
+CREATE TABLE payment_method (
 id_ref integer,
 user_ID integer, 
 selected boolean default 1,
@@ -60,7 +48,6 @@ payment_type varchar(100) default 'manual',
 primary key(id_ref),
 foreign key(user_ID) references user_account(user_ID)
 );
-
 
 CREATE TABLE credit_card (
 card_number varchar(45), 
@@ -80,8 +67,14 @@ primary key(bank_account_num),
 foreign key(id_ref) references payment_method(id_ref)
 );
 
+CREATE TABLE deactivate (
+admin_email varchar(100),
+user_ID int(11),
+foreign key(admin_email) references administrator(email),
+foreign key(user_ID) references user_account(user_ID)
+);
 
-CREATE TABLE category(
+CREATE TABLE category (
 category_name varchar(100),
 user_ID integer,
 primary key(category_name),
@@ -110,8 +103,7 @@ foreign key(employee_user_ID) references employee(user_ID),
 foreign key(employer_user_ID) references employer(user_ID)
 );
 
-
-CREATE TABLE give_offer(
+CREATE TABLE give_offer (
 employee_user_ID integer,
 employer_user_ID integer,
 job_ID integer,
@@ -121,7 +113,6 @@ foreign key(employer_user_ID) references employer(user_ID),
 foreign key(job_ID) references job(job_ID)
 );
 
-
 CREATE TABLE choose (
 user_ID integer,
 category_name varchar(100),
@@ -130,7 +121,7 @@ foreign key(employee_user_ID) references employee(user_ID),
 foreign key(category_name) references category(category_name)
 );
 
-CREATE TABLE apply(
+CREATE TABLE apply (
 employee_user_ID integer,
 job_ID integer,
 app_status varchar(100) default 'pending',
@@ -139,5 +130,3 @@ primary key(employee_user_ID,job_ID),
 foreign key(employee_user_ID) references employee(user_ID),
 foreign key(job_ID) references job(job_ID)
 );
-
-
