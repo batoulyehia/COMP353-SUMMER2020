@@ -18,7 +18,7 @@
                 </form>
             </div>
         </nav>
-        <div style="margin: 50px;padding: 20px; border: 1px solid #ccc;border-radius: 16px; font-size: 24px;">
+        <div style="max-width: fit-content;margin: auto; margin-top: 30px;padding: 20px; border: 1px solid #ccc;border-radius: 16px; font-size: 24px;">
             <h2>My Account</h2>
             <div style="display:flex;">
                 <div style="display: flex; flex-direction: column;margin-right: 50px;">

@@ -18,7 +18,7 @@
                 </form>
             </div>
         </nav>    
-        <div style="display:flex; flex-direction: column; padding: 5vw; border: 1px solid #eee; border-radius: 15px; margin: 5vw; max-width: fit-content">
+        <div style="display:flex; flex-direction: column; padding: 5vw; border: 1px solid #eee; border-radius: 15px; margin: auto; max-width: fit-content">
             <h2 style="margin-bottom: 30px;">Job Position: Software Engineer</h2>
             <p style="font-size: 24px;">Job Description:</p>
             <div style="max-width: 50vw;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 

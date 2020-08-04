@@ -19,8 +19,9 @@
                 </form>
             </div>
         </nav>
-        <div style="width: fit-content; margin: 10vh">
+        <div style="width: fit-content; margin: auto; margin-top: 30px;">
         <h2 style="margin-bottom:20px;">View New Employees</h2>
+            <div style="margin-bottom: 20px;">Displays the employees who joined, sorted by most recent.</div>
             <!-- have to sort by NEWEST --> 
             <table class="table">
                 <thead>

@@ -18,8 +18,9 @@
                 </form>
             </div>
         </nav>
-        <h3 style="margin-bottom:20px;">Home</h3>
-        <div style="display: flex; flex-direction: column;">
+       
+        <div style="margin: auto;max-width: fit-content; display: flex; flex-direction: column;">
+        <h3 style="margin-top: 20px; margin-bottom: 20px;">Home</h3>
         <!-- add welcome, username --> 
             <h5>My Registered Jobs</h5>
             <table class="table">
