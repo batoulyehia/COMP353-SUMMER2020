@@ -114,7 +114,7 @@ foreign key(job_ID) references job(job_ID)
 );
 
 CREATE TABLE choose (
-user_ID integer,
+employee_user_ID integer,
 category_name varchar(100),
 primary key(employee_user_ID,category_name),
 foreign key(employee_user_ID) references employee(user_ID),
