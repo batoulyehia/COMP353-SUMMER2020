@@ -29,6 +29,8 @@
       $Valid2 = $Password; 
     }
 
+
+
     //Checks values from database
     if (!empty($Valid1) and !empty($Valid2)){
       $stmt = $conn->prepare("SELECT * 
@@ -70,6 +72,7 @@
       if ($stmt->fetch()) {
         session_start();
         $_SESSION["Flag"] = "Works!";
+        $_SESSION["user_email"] = $Valid1;
         if($isEmployer){
           header("Location: ../employer/home.php");
         }
