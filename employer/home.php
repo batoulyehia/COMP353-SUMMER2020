@@ -23,7 +23,7 @@
                 $last_name = $partName[1]; //column 2
             }
 
-            //get user_id
+            //get user_ids
             $user_ID_get = $conn->prepare("SELECT user_ID FROM user_account acc WHERE acc.email = :theEmail ");
             $user_ID_get->bindParam(':theEmail', $theEmail);
             $user_ID_get->execute();
@@ -46,6 +46,26 @@
             $getApplicationSummaries->execute();
             $applicationSummaries = $getApplicationSummaries->fetchAll(PDO::FETCH_NUM);
 
+            //check if an employer is prime or gold, disable the add job button 
+            $getMembership = $conn->prepare("SELECT employer_membership_type FROM employer WHERE user_ID = :emID");
+            $getMembership->bindParam(':emID', $user_ID);
+            $getMembership->execute();
+            $retrievedMemberships = $getMembership->fetchAll(PDO::FETCH_NUM);
+            foreach($retrievedMemberships as $retrievedMembership){
+                $membership = $retrievedMembership[0]; //this is the employer's membership type
+            }
+            var_dump($membership);
+
+            //For prime membership, if they have no 
+            $getNumJobs = $conn->prepare("SELECT COUNT(*) FROM job WHERE user_ID = :emID");
+            $getNumJobs->bindParam(':emID', $user_ID);
+            $getNumJobs->execute();
+            $retrievedNumJobs = $getNumJobs->fetchAll(PDO::FETCH_NUM);
+            foreach($retrievedNumJobs as $retrievedNumJob){
+                $jobNum = $retrievedNumJob[0] + 0;
+            }
+            var_dump($jobNum);
+
         ?>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -62,9 +82,20 @@
                 </form>
             </div>
         </nav>
+        <?php 
+            if($membership == 'gold'){ ?>
+                <a href="new-job.php" class="btn btn-primary btn-lg">Add New Job</a>
+
+            <?php } 
+            elseif($membership == 'prime' && $jobNum < 5){ ?>
+                <a href="new-job.php" class="btn btn-primary btn-lg">Add New Job</a>
+            <?php } else { ?>
+                <a href="new-job.php" class="btn btn-primary btn-lg disabled">Add New Job</a>
+                <div>You may only submit 5 jobs. </div>
+            <?php } ?>
+        
         <div style="margin: auto;max-width: fit-content; display: flex; flex-direction: column;">
         <h3 style="margin-top: 20px; margin-bottom: 20px;">Home</h3>
-        <!-- add welcome, username --> 
             <h5>My Registered Jobs</h5>
             <table class="table">
                 <thead>
