@@ -89,7 +89,7 @@ num_of_workers_needed integer,
 date_posted date,
 job_title varchar(100),
 job_status varchar(100) default 'open',
-job_description varchar(5000), 
+description varchar(5000), 
 PRIMARY KEY (job_ID),
 FOREIGN KEY (category_name) REFERENCES category(category_name),
 FOREIGN KEY (user_ID) REFERENCES employer(user_ID)
