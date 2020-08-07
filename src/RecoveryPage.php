@@ -1,12 +1,11 @@
 <?php require 'DatabaseConnection.php'; ?>
 
 <?php
-  $Valid1 = $Valid2 = "";
-  $ErrorEmail = $ErrorPassword = $ErrorMessage1 = $ErrorMessage2 = "";
-  
+  $Valid1 = "";
+  $ErrorEmail = $ErrorMessage1 = "";
+
   if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $Email = $_POST["Email"];
-    $Password = $_POST["Password"];
 
     //Email verification
     if (empty($_POST["Email"])){
@@ -20,30 +19,22 @@
         $Valid1 = $Email;
       }
     }
-    
-    //Password verification
-    if (empty($_POST["Password"])){
-      $ErrorPassword = "Password is required.";
-    }
-    else{
-      $Valid2 = $Password; 
-    }
-
-    //Checks values from database
-    if (!empty($Valid1) and !empty($Valid2)){
-      $stmt = $conn->prepare("SELECT * 
-                              FROM user_account acc, administrator adm 
-                              WHERE (acc.email = :valid1 AND acc.password = :valid2) OR (adm.email = :valid1 AND adm.password = :valid2)");
-      $stmt->bindParam(':valid1', $Valid1);
-      $stmt->bindParam(':valid2', $Valid2);
+   
+    //Adds values to database
+    if (!empty($Valid1)){
+      $stmt = $conn->prepare("SELECT acc.password
+                              FROM user_account acc
+                              WHERE acc.email = :email)");
+      $stmt->bindParam(':email', $Valid1);
       $stmt->execute();
       if ($stmt->fetch()) {
-        session_start();
+        $msg = "Your password is: ";        // ADD PASSWORD USING SQL QUERY
+        $headers = "From: wxc353_1@encs.concordia.ca" . "\r\n" . "CC: wx_comp353_1@encs.concordia.ca";
+        mail($Valid1,"Password Recovery",$msg, $headers);
         header("Location: ProfilePage.php");
       }
       else{
         $ErrorMessage1 = " Please try again."; 
-        $ErrorMessage2 = " Please try again.";
       }
     }
   }
@@ -65,11 +56,7 @@
             <form class="login-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
               <span class="error"><?php echo $ErrorEmail, $ErrorMessage1;?></span>
               <input type="email" placeholder="Email" name="Email" />
-              <span class="error"><?php echo $ErrorPassword, $ErrorMessage2;?></span>
-              <input type="password" placeholder="Password" name="Password" />
-              <input class="button" type="submit" name="submit" value="Login" />
-              <p class="message">Not registered? <a href="CreatePage.php">Create an account</a></p>
-              <p class="message"><a href="RecoveryPage.php">Forgot password?</a></p>
+              <input class="button" type="submit" name="submit" value="Recover" />                         
             </form>
           </div>
         </div>
