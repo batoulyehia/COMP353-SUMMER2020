@@ -51,7 +51,7 @@ foreign key(user_ID) references user_account(user_ID)
 
 CREATE TABLE credit_card (
 card_number varchar(16), 
-id_ref varchar(45), 
+id_ref integer, 
 cvc varchar(45),
 credit_card_name varchar(100),
 exp_date date, 
@@ -61,7 +61,7 @@ foreign key(id_ref) references payment_method(id_ref)
 
 CREATE TABLE checking_account (
 bank_account_num varchar(10), 
-id_ref varchar(45), 
+id_ref integer, 
 name_of_assoc_acct varchar(100), 
 primary key(bank_account_num),
 foreign key(id_ref) references payment_method(id_ref)
