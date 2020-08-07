@@ -1,10 +1,6 @@
 <?php 
     require '../src/DatabaseConnection.php'; 
     session_start();
-   
-   // var_dump($_SESSION["user_email"]);
-    
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,6 +12,7 @@
         
             //retrieve first name and last name for the top bar
             $theEmail = $_SESSION["user_email"];
+            
             $displayName = $conn->prepare("SELECT first_name, last_name FROM user_account acc WHERE email = :theEmail ");
             $displayName->bindParam(':theEmail', $theEmail);
             $displayName->execute();
@@ -42,16 +39,7 @@
             $getRegisteredJobs->execute();
 
             $registeredJobs = $getRegisteredJobs->fetchAll(PDO::FETCH_NUM);
-            foreach($registeredJobs as $registeredJob){
-                //5 columns
-                $job_ID = $registeredJob[0];
-                $job_title = $registeredJob[1];
-                $job_description = $registeredJob[2];
-                $job_status = $registeredJob[3];
-                $date_posted = $registeredJob[4];
-            }
 
-            var_dump($job_title);
             
 
             
