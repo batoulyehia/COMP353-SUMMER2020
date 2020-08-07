@@ -14,16 +14,46 @@
     <body>
         <?php 
         
+            //retrieve first name and last name for the top bar
             $theEmail = $_SESSION["user_email"];
             $displayName = $conn->prepare("SELECT first_name, last_name FROM user_account acc WHERE email = :theEmail ");
             $displayName->bindParam(':theEmail', $theEmail);
             $displayName->execute();
 
             $fullName = $displayName->fetchAll(PDO::FETCH_NUM);
+
             foreach($fullName as $partName){
-                $first_name = $partName[0];
-                $last_name = $partName[1];
+                $first_name = $partName[0]; //column 1
+                $last_name = $partName[1]; //column 2
             }
+
+            //get user_id
+            $user_ID_get = $conn->prepare("SELECT user_ID FROM user_account acc WHERE acc.email = :theEmail ");
+            $user_ID_get->bindParam(':theEmail', $theEmail);
+            $user_ID_get->execute();
+            $user_ID_array = $user_ID_get->fetchAll(PDO::FETCH_NUM);
+            
+            foreach($user_ID_array as $user_ID_el){
+                $user_ID = $user_ID_el[0]; 
+            }
+
+            $getRegisteredJobs = $conn->prepare("SELECT job_ID, job_title, job_description, job_status, date_posted FROM job j WHERE j.user_ID = :current_ID");
+            $getRegisteredJobs->bindParam(':current_ID', $user_ID);
+            $getRegisteredJobs->execute();
+
+            $registeredJobs = $getRegisteredJobs->fetchAll(PDO::FETCH_NUM);
+            foreach($registeredJobs as $registeredJob){
+                //5 columns
+                $job_ID = $registeredJob[0];
+                $job_title = $registeredJob[1];
+                $job_description = $registeredJob[2];
+                $job_status = $registeredJob[3];
+                $date_posted = $registeredJob[4];
+            }
+
+            var_dump($job_title);
+            
+
             
         ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -55,23 +85,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                        <?php foreach($registeredJobs as $registeredJob){ ?>
+                        <th scope="row"><?php echo $registeredJob[0] ?></th>
+                        <td><?php echo $registeredJob[1] ?></td>
+                        <td><?php echo $registeredJob[2] ?></td>
+                        <td><?php echo $registeredJob[3] ?></td>
                     </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@jt</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    </tr>
+                    <?php } ?>
                 </tbody>
             </table>
             <h5>Application List</h5>
