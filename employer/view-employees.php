@@ -1,3 +1,7 @@
+<?php 
+    require '../src/DatabaseConnection.php'; 
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,6 +9,13 @@
 
     </head>
     <body>
+        <?php
+            $theEmail = $_SESSION["user_email"];
+            $sqlEmployees = $conn->prepare("SELECT acc.user_ID, acc.first_name, acc.last_name FROM user_account acc, employee em WHERE acc.user_ID = em.user_ID");
+            $sqlEmployees->execute();
+
+            $employees = $sqlEmployees->fetchAll(PDO::FETCH_NUM);
+        ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Home</a>
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/view-employees.php">Users</a>
@@ -26,31 +37,21 @@
             <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">Employee Name</th>
-                    <th scope="col">Date Joined</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Location</th>
+                        <th scope="col">Employee Name</th>
+                        <th scope="col">Date Joined</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Location</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                        <?php foreach($employees as $employee){ ?>
+                        <th scope="row"><?php echo $employee[0], $employee[1] ?></th>
+                        <td><?php echo $employee[2] ?></td>
+                        <td><?php echo $employee[2] ?></td>
+                        <td><?php echo $employee[2] ?></td>
                     </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@jt</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
