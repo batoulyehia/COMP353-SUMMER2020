@@ -9,7 +9,6 @@
     </head>
     <body>
         <?php 
-        
             //retrieve first name and last name for the top bar
             $theEmail = $_SESSION["user_email"];
             
@@ -34,15 +33,19 @@
                 $user_ID = $user_ID_el[0]; 
             }
 
-            $getRegisteredJobs = $conn->prepare("SELECT job_ID, job_title, job_description, job_status, date_posted FROM job j WHERE j.user_ID = :current_ID");
+            //get registered jobs
+            $getRegisteredJobs = $conn->prepare("SELECT job_ID, job_title, description, job_status, date_posted FROM job j WHERE j.user_ID = :current_ID");
             $getRegisteredJobs->bindParam(':current_ID', $user_ID);
             $getRegisteredJobs->execute();
-
             $registeredJobs = $getRegisteredJobs->fetchAll(PDO::FETCH_NUM);
 
+            //get applications summary
             
+            $getApplicationSummaries = $conn->prepare("SELECT app.job_ID,j.job_title, acc.first_name, acc.last_name, acc.email, app.app_status, app.date_applied FROM user_account acc, job j, apply app WHERE app.employee_user_ID = acc.user_ID AND app.job_ID = j.job_ID AND j.user_ID = :current_user_ID");
+            $getApplicationSummaries->bindParam(':current_user_ID', $user_ID);
+            $getApplicationSummaries->execute();
+            $applicationSummaries = $getApplicationSummaries->fetchAll(PDO::FETCH_NUM);
 
-            
         ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Home</a>
@@ -86,40 +89,25 @@
             <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">Job ID</th>
-                    <th scope="col">Job Title</th>
-                    <th scope="col">Applicant Name</th>
-                    <th scope="col">Email Address</th>
-                    <th scope="col">Application Status</th>
-                    <th scope="col">View Application (link)</th>
-                    <!-- could be a pop-up that shows the applicant name and everything?-->
+                        <th scope="col">Job ID</th>
+                        <th scope="col">Job Title</th>
+                        <th scope="col">Applicant Name</th>
+                        <th scope="col">Email Address</th>
+                        <th scope="col">Application Status</th>
+                        <th scope="col">Date Applied</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Pending</td>
-                    <td>View Here</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@jt</td>
-                    <td>Accepted</td>
-                    <td>View Link</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    <td>Withdrawn</td>
-                    <td>View Link</td>
-                    </tr>    
+                        <?php foreach($applicationSummaries as $applicationSummary) { ?>
+                            <th scope="row"><?php echo $applicationSummary[0] ?></th>
+                            <td><?php echo $applicationSummary[1] ?></td>
+                            <td><?php echo $applicationSummary[2], ' ',$applicationSummary[3] ?></td>
+                            <td><?php echo $applicationSummary[4] ?></td>
+                            <td><?php echo $applicationSummary[5] ?></td>
+                            <td><?php echo $applicationSummary[6] ?></td>
+                        <?php } ?>
+                    </tr> 
                 </tbody>
             </table>
         </div>
