@@ -47,6 +47,7 @@
             $applicationSummaries = $getApplicationSummaries->fetchAll(PDO::FETCH_NUM);
 
         ?>
+
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Home</a>
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/view-employees.php">Users</a>
