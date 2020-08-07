@@ -40,7 +40,6 @@
             $registeredJobs = $getRegisteredJobs->fetchAll(PDO::FETCH_NUM);
 
             //get applications summary
-            
             $getApplicationSummaries = $conn->prepare("SELECT app.job_ID,j.job_title, acc.first_name, acc.last_name, acc.email, app.app_status, app.date_applied FROM user_account acc, job j, apply app WHERE app.employee_user_ID = acc.user_ID AND app.job_ID = j.job_ID AND j.user_ID = :current_user_ID");
             $getApplicationSummaries->bindParam(':current_user_ID', $user_ID);
             $getApplicationSummaries->execute();
@@ -54,9 +53,8 @@
             foreach($retrievedMemberships as $retrievedMembership){
                 $membership = $retrievedMembership[0]; //this is the employer's membership type
             }
-            var_dump($membership);
 
-            //For prime membership, if they have no 
+            //get number of jobs, to be used to check if a prime member exceeded their amount of jobs
             $getNumJobs = $conn->prepare("SELECT COUNT(*) FROM job WHERE user_ID = :emID");
             $getNumJobs->bindParam(':emID', $user_ID);
             $getNumJobs->execute();
@@ -64,15 +62,13 @@
             foreach($retrievedNumJobs as $retrievedNumJob){
                 $jobNum = $retrievedNumJob[0] + 0;
             }
-            var_dump($jobNum);
-
         ?>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Home</a>
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/view-employees.php">Users</a>
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/account.php">My Account</a>
-            <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Contact Us</a>
+            <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/contact.php">Contact Us</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="mr-auto"></div>
                 <div style="margin-right: 20px"><?php echo $first_name, ' ', $last_name ?></div>
