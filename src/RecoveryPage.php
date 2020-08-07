@@ -22,16 +22,17 @@
    
     //Adds values to database
     if (!empty($Valid1)){
-      $stmt = $conn->prepare("SELECT acc.password
-                              FROM user_account acc
-                              WHERE acc.email = :email)");
-      $stmt->bindParam(':email', $Valid1);
+      $stmt = $conn->prepare("SELECT password
+                              FROM user_account
+                              WHERE email = :valid1");
+      $stmt->bindParam(':valid1', $Valid1);
       $stmt->execute();
-      if ($stmt->fetch()) {
-        $msg = "Your password is: ";        // ADD PASSWORD USING SQL QUERY
+      $res = $stmt->fetchColumn();
+      if ($res) {
+        $msg = "Your password is: " . $res;
         $headers = "From: wxc353_1@encs.concordia.ca" . "\r\n" . "CC: wx_comp353_1@encs.concordia.ca";
         mail($Valid1,"Password Recovery",$msg, $headers);
-        header("Location: ProfilePage.php");
+        header("Location: LoginPage.php");
       }
       else{
         $ErrorMessage1 = " Please try again."; 
