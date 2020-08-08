@@ -24,7 +24,7 @@
                 $last_name = $partName[1]; //column 2
             }
 
-            $sqlEmployees = $conn->prepare("SELECT acc.user_ID, acc.first_name, acc.last_name FROM user_account acc, employee em WHERE acc.user_ID = em.user_ID");
+            $sqlEmployees = $conn->prepare("SELECT acc.user_ID, acc.first_name, acc.last_name, acc.email, acc.status FROM user_account acc, employee em WHERE acc.user_ID = em.user_ID ORDER BY acc.user_ID DESC");
             $sqlEmployees->execute();
 
             $employees = $sqlEmployees->fetchAll(PDO::FETCH_NUM);
@@ -51,19 +51,20 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th scope="col">user_ID</th>
                         <th scope="col">Employee Name</th>
-                        <th scope="col">Date Joined</th>
-                        <th scope="col">Phone Number</th>
-                        <th scope="col">Location</th>
+                        <th scope="col">Email Address</th>
+                        <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <?php foreach($employees as $employee){ ?>
-                        <th scope="row"><?php echo $employee[0], $employee[1] ?></th>
-                        <td><?php echo $employee[2] ?></td>
-                        <td><?php echo $employee[2] ?></td>
-                        <td><?php echo $employee[2] ?></td>
+                        
+                        <th scope="row"><?php echo $employee[0] ?></th>
+                        <td><?php  echo $employee[1], $employee[2] ?></td>
+                        <td><?php echo $employee[3] ?></td>
+                        <td><?php echo $employee[4] ?></td>
                     </tr>
                     <?php } ?>
                 </tbody>
