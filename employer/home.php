@@ -40,7 +40,7 @@
             $registeredJobs = $getRegisteredJobs->fetchAll(PDO::FETCH_NUM);
 
             //get applications summary
-            $getApplicationSummaries = $conn->prepare("SELECT app.job_ID,j.job_title, acc.first_name, acc.last_name, acc.email, app.app_status, app.date_applied FROM user_account acc, job j, apply app WHERE app.employee_user_ID = acc.user_ID AND app.job_ID = j.job_ID AND j.user_ID = :current_user_ID");
+            $getApplicationSummaries = $conn->prepare("SELECT app.job_ID,j.job_title, acc.first_name, acc.last_name, acc.email, app.app_status, app.date_applied, acc.user_ID, j.user_ID FROM user_account acc, job j, apply app WHERE app.employee_user_ID = acc.user_ID AND app.job_ID = j.job_ID AND j.user_ID = :current_user_ID");
             $getApplicationSummaries->bindParam(':current_user_ID', $user_ID);
             $getApplicationSummaries->execute();
             $applicationSummaries = $getApplicationSummaries->fetchAll(PDO::FETCH_NUM);
@@ -62,6 +62,11 @@
             foreach($retrievedNumJobs as $retrievedNumJob){
                 $jobNum = $retrievedNumJob[0] + 0;
             }
+
+            //accept/deny offer, update the apply table, change the value to rejected or accepted
+            $updateApply = $conn->prepare("UPDATE apply SET app_status = :appStatus WHERE ")
+            
+
         ?>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -123,6 +128,8 @@
                         <th scope="col">Email Address</th>
                         <th scope="col">Application Status</th>
                         <th scope="col">Date Applied</th>
+                        <th scope="col">Accept/Reject</th>
+                        <th scope="col">Submit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -134,7 +141,25 @@
                             <td><?php echo $applicationSummary[4] ?></td>
                             <td><?php echo $applicationSummary[5] ?></td>
                             <td><?php echo $applicationSummary[6] ?></td>
+                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                            <td><select name="appStatus" class="form-control">
+                                <option value="accepted">Accept</option>
+                                <option value="rejected">Reject</option>
+                            </select> </td>
+
                         <?php } ?>
+                        <td><button class="btn btn-primary" type="submit" value="Submit" name="Submit">Button</button></td>
+                        </form>
+                        <?php 
+                            if(isset($_POST['Submit'])){
+                                $updateApply = $conn->prepare("UPDATE apply SET app_status = :appStatus WHERE employee_user_ID = :e_UID AND job_ID = :a_jobID");
+                                $updateApply->bindParam(':appStatus', $_POST['appStatus']);
+                                $updateApply->bindParam('e_UID', $applicationSummary[7]);
+                                $updateApply->bindParam('a_jobID', $applicationSummary[0]);
+                                $updateApply->execute(); 
+                                header("Location: home.php");
+                            }
+                        ?>
                     </tr> 
                 </tbody>
             </table>
