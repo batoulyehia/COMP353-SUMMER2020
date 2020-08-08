@@ -29,21 +29,16 @@
       $Valid2 = $Password; 
     }
 
-
-
     //Checks values from database
     if (!empty($Valid1) and !empty($Valid2)){
       $stmt = $conn->prepare("SELECT * 
                               FROM user_account acc, administrator adm 
-                              WHERE (acc.email = :valid1 AND acc.password = :valid2) OR (adm.email = :valid1 AND adm.password = :valid2)"
-                            );
+                              WHERE (acc.email = :valid1 AND acc.password = :valid2) OR (adm.email = :valid1 AND adm.password = :valid2)");
       $stmt->bindParam(':valid1', $Valid1);
       $stmt->bindParam(':valid2', $Valid2);
       $stmt->execute();
 
-      $isAdmin = false;
-      $isEmployer = false;
-      $isEmployee = false;
+      $isAdmin = $isEmployer = $isEmployee = false;
 
       //checks for admin 
       $checkAdmin = $conn->prepare("SELECT adm.email FROM administrator adm WHERE adm.email = :valid1");
@@ -71,7 +66,6 @@
 
       if ($stmt->fetch()) {
         session_start();
-        $_SESSION["Flag"] = "Works!";
         $_SESSION["user_email"] = $Valid1;
         if($isEmployer){
           header("Location: ../employer/home.php");
@@ -100,7 +94,7 @@
       <head>
         <meta charset="utf-8"> 
         <title>Login</title>
-        <link rel="stylesheet" href="loginStyle.css">
+        <link rel="stylesheet" href="LoginStyle.css">
         <style>
         .error {color: #FF0000;}
         </style>
@@ -110,11 +104,12 @@
           <div class="form">
             <form class="login-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
               <span class="error"><?php echo $ErrorEmail, $ErrorMessage1;?></span>
-              <input type="Email" placeholder="Email" name="Email" />
+              <input type="email" placeholder="Email" name="Email" />
               <span class="error"><?php echo $ErrorPassword, $ErrorMessage2;?></span>
-              <input type="Password" placeholder="Password" name="Password" />
+              <input type="password" placeholder="Password" name="Password" />
               <input class="button" type="submit" name="submit" value="Login" />
               <p class="message">Not registered? <a href="CreatePage.php">Create an account</a></p>
+              <p class="message"><a href="RecoveryPage.php">Forgot password?</a></p>
             </form>
           </div>
         </div>
