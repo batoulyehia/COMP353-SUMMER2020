@@ -6,6 +6,12 @@
 <html>
     <head>
         <link rel="stylesheet" href="../includes/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="../includes/css/admin-home-page.css" />
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+        <script src="../includes/js/admin-home-page.js"></script>
+
     </head>
     <body>
         <?php 
@@ -48,8 +54,8 @@
             $postedJobsInformation_query->execute();
             $postedJobsInformation = $postedJobsInformation_query->fetchAll(PDO::FETCH_ASSOC);
 
-            //jobs posted info
-            $appliedJobsInformation_query = $conn->prepare("SELECT first_name, last_name, J.job_ID, job_title, A.date_applied, app_status FROM apply A, user_account AC, job J WHERE AC.user_ID = A.employee_user_ID AND J.job_ID = A.job_ID ");
+            //applied jobs  info
+            $appliedJobsInformation_query = $conn->prepare("SELECT first_name, last_name, J.job_ID, job_title, A.date_applied, app_status, A.employee_user_ID FROM apply A, user_account AC, job J WHERE AC.user_ID = A.employee_user_ID AND J.job_ID = A.job_ID ");
             $appliedJobsInformation_query->execute();
             $appliedJobsInformation = $appliedJobsInformation_query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -62,8 +68,6 @@
             $givenOffersEmployersInformation_query = $conn->prepare("SELECT first_name, last_name, GOF.job_ID, J.job_title, GOF.employee_user_ID FROM give_offer GOF, user_account AC, job J WHERE GOF.employer_user_ID = AC.user_ID AND GOF.job_ID = J.job_ID");
             $givenOffersEmployersInformation_query->execute();
             $givenOffersEmployersInformation = $givenOffersEmployersInformation_query->fetchAll(PDO::FETCH_ASSOC);
-
-            
         ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/COMP353-SUMMER2020/admin/home-page.php">Home</a>
@@ -93,9 +97,33 @@
                 </tbody>
             </table>
 
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="radio">
+                        <label style="margin-left: 10px;"><input style="display: none;" id ="employeeList" type="radio" name="optradio">List of Employees</label>
+                    </div>
+                    <div class="radio">
+                        <label style="margin-left: 10px;"><input style="display: none;" id ="employerList" type="radio" name="optradio">List of Employers</label>
+                    </div>
+                    <div class="radio ">
+                        <label style="margin-left: 10px;"><input style="display: none;" id ="postedJobs" type="radio" name="optradio">Jobs posted by Employers</label>
+                    </div>
+                    <div class="radio ">
+                        <label style="margin-left: 10px;"><input style="display: none;" id ="appliedJobs" type="radio" name="optradio" >Jobs applied by Employees</label>
+                    </div>
+                    <div class="radio ">
+                        <label style="margin-left: 10px;"><input style="display: none;" id ="offersGiven" type="radio" name="optradio" >Offers given by Employers</label>
+                    </div>
+                </div>
+            </div>
+            
+
             <!--dropdown here-->
-            <h5 style="margin-top: 40px;">List of Employees</h5>
-            <table class="table">
+            <h5 class="employeeListTitle" style="margin-top: 40px;">List of Employees</h5>
+            <table class="table employeeList">
                 <thead>
                     <tr>
                         <th scope="col">Employee Name</th>
@@ -117,9 +145,10 @@
                     <?php } ?>
                 </tbody>
             </table>
+
             <!--dropdown here-->
-            <h5 style="margin-top: 40px;">List of Employers</h5>
-            <table class="table">
+            <h5 class="employerListTitle" style="margin-top: 40px;">List of Employers</h5>
+            <table class="table employerList">
                 <thead>
                     <tr>
                         <th scope="col">Employer Name</th>
@@ -143,8 +172,8 @@
             </table>
 
             <!--dropdown here-->
-            <h5 style="margin-top: 40px;">Jobs posted by Employers</h5>
-            <table class="table">
+            <h5 class="postedJobsTitle" style="margin-top: 40px;">Jobs posted by Employers</h5>
+            <table class="table postedJobs">
                 <thead>
                     <tr>
                         <th scope="col">Employer Name</th>
@@ -168,8 +197,8 @@
             </table>
 
             <!--dropdown here-->
-            <h5 style="margin-top: 40px;">Jobs applied to by Employees</h5>
-            <table class="table">
+            <h5 class="appliedJobsTitle" style="margin-top: 40px;">Jobs applied to by Employees</h5>
+            <table class="table appliedJobs">
                 <thead>
                     <tr>
                         <th scope="col">Employee Name</th>
@@ -194,23 +223,45 @@
 
 
             <!--dropdown here-->
-            <h5 style="margin-top: 40px;">Offers given by Employers</h5>
-            <table class="table">
+            <h5 class="offersGivenTitle" style="margin-top: 40px;">Offers given by Employers</h5>
+            <table class="table offersGiven">
                 <thead>
                     <tr>
                         <th scope="col">Offered by Employer</th>
                         <th scope="col">Job_ID</th>
                         <th scope="col">Job Title</th>
-                        <th scope="col">Offered to Employee</th>
+                        <th scope="col">Offered to Employee name</th>
+                        <th scope="col">Employee Response</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <?php 
+                            $appliedJobsInformation_query->execute();
+                            $appliedJobsInformation = $appliedJobsInformation_query->fetchAll(PDO::FETCH_ASSOC);
+                            $simpleArray = array();
+                            $simpleArray = array_values($appliedJobsInformation);
+                        ?>
+
                         <?php foreach($givenOffersEmployersInformation as $givenOffersEmployersInformation){ ?>
                             <td><?php echo $givenOffersEmployersInformation['first_name'],' ', $givenOffersEmployersInformation['last_name'] ?></td>
                             <td><?php echo $givenOffersEmployersInformation['job_ID']?></td>
                             <td><?php echo $givenOffersEmployersInformation['job_title']?></td>
-                            <td><?php echo $givenOffersEmployersInformation['employee_user_ID']?></td>
+
+                            <?php for ($x = 0; $x < sizeof($simpleArray); $x++){
+                                if ($simpleArray[$x]['employee_user_ID'] == $givenOffersEmployersInformation['employee_user_ID']){
+                                    $tempEmployeeName = $simpleArray[$x]['first_name'];
+                                    $tempEmployeeName .= " " . $simpleArray[$x]['last_name'];
+                                    if ($simpleArray[$x]['app_status'] == "applied") {
+                                        $appStatus = "pending";    
+                                    }else{
+                                        $appStatus = $simpleArray[$x]['app_status'];
+                                    }
+                                }
+                            } ?>
+
+                            <td><?php  echo $tempEmployeeName?></td>
+                            <td><?php  echo $appStatus?></td>                            
                     </tr>
                     <?php } ?>
                 </tbody>
