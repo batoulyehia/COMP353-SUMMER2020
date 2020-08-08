@@ -34,7 +34,7 @@
             }
 
             //get registered jobs
-            $getRegisteredJobs = $conn->prepare("SELECT job_ID, job_title, description, job_status, date_posted FROM job j WHERE j.user_ID = :current_ID");
+            $getRegisteredJobs = $conn->prepare("SELECT job_ID, job_title, description, job_status, date_posted, num_of_workers_needed FROM job j WHERE j.user_ID = :current_ID");
             $getRegisteredJobs->bindParam(':current_ID', $user_ID);
             $getRegisteredJobs->execute();
             $registeredJobs = $getRegisteredJobs->fetchAll(PDO::FETCH_NUM);
@@ -63,9 +63,6 @@
                 $jobNum = $retrievedNumJob[0] + 0;
             }
 
-            //accept/deny offer, update the apply table, change the value to rejected or accepted
-            $updateApply = $conn->prepare("UPDATE apply SET app_status = :appStatus WHERE ")
-            
 
         ?>
 
@@ -104,7 +101,9 @@
                     <th scope="col">Job ID</th>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Date posted</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Number of workers needed</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,7 +112,9 @@
                         <th scope="row"><?php echo $registeredJob[0] ?></th>
                         <td><?php echo $registeredJob[1] ?></td>
                         <td><?php echo $registeredJob[2] ?></td>
+                        <td><?php echo $registeredJob[4] ?></td>
                         <td><?php echo $registeredJob[3] ?></td>
+                        <td><?php echo $registeredJob[5] ?></td>
                     </tr>
                     <?php } ?>
                 </tbody>
