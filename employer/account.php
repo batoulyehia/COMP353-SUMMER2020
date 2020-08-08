@@ -32,19 +32,27 @@
             foreach($user_ID_array as $user_ID_el){
                 $user_ID = $user_ID_el[0]; 
             }
-
+            
+              //get user_id
+            $subs_get = $conn->prepare("SELECT employer_membership_type FROM employer WHERE user_ID = :userID ");
+            $subs_get->bindParam(':userID', $user_ID);
+            $subs_get->execute();
+            $subs_array = $subs_get->fetchAll(PDO::FETCH_NUM);
+  
+            foreach($subs_array as $sub){
+                $member = $sub[0];
+            }
+            
             //get account info
-            $getAccountDetails = $conn->prepare("SELECT e.employee_membership_type, acc.balance, acc.status FROM user_account acc, employee e WHERE acc.email = :theEmail and acc.user_ID = :e_user_id AND e.user_ID" );
+            $getAccountDetails = $conn->prepare("SELECT acc.balance, acc.status FROM employer e, user_account acc WHERE acc.email = :theEmail and acc.user_ID = :e_user_id" );
             $getAccountDetails->bindParam(':theEmail', $theEmail);
             $getAccountDetails->bindParam(':e_user_id', $user_ID);
             $getAccountDetails->execute();
             $accountDetails = $getAccountDetails->fetchAll(PDO::FETCH_NUM);
 
             foreach($accountDetails as $accountDetail){
-                $subscription = $accountDetail[0];
-                $balance = $accountDetail[1];
-                $status = $accountDetail[2];
-
+                $balance = $accountDetail[0];
+                $status = $accountDetail[1];
             }
         ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -63,6 +71,7 @@
         </nav>
         <div style="max-width: fit-content;margin: auto; margin-top: 30px;padding: 20px; border: 1px solid #ccc;border-radius: 16px; font-size: 24px;">
             <h2>My Account</h2>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
             <div style="display:flex;">
                 <div style="display: flex; flex-direction: column;margin-right: 50px;">
                     <div>Name:</div>
@@ -70,23 +79,48 @@
                     <div>Subscription Type:</div>
                     <div>Current Balance:</div>
                     <div>Account Status:</div>
-                    <div>Payment Method:</div>
+                    <div>Change Subscription</div>
                 </div>
-                <div style="display: flex; flex-direction: column">
-                    <div><?php echo $first_name, ' ', $last_name?></div>
-                    <div><?php echo $theEmail ?></div>
-                    <div><?php echo $subscription ?></div>
-                    <div><?php echo  $balance?></div>
-                    <div><?php echo $status?></div>
-                    <!-- add radio button here --> 
-                    <div>Payment Method:</div>
+                
+                    <div style="display: flex; flex-direction: column">
+                        <div><?php echo $first_name, ' ', $last_name?></div>
+                        <div><?php echo $theEmail ?></div>
+                        <div><?php echo $member ?></div>
+                        <div><?php echo  $balance?></div>
+                        <div><?php echo $status?></div>
+                        <!-- add radio button here --> 
+                        <div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="subscription_type" value="prime" <?php if($member == 'prime'){ ?> checked <?php } ?> />
+                                <label class="form-check-label">
+                                    Prime
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="subscription_type" value="gold" <?php if($member == 'gold'){ ?> checked <?php } ?> />
+                                <label class="form-check-label">
+                                    Gold
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            <button type="button" class="btn btn-primary btn-lg" style="margin-top: 20px">Add New Payment Method</button>
-            <br>
-            <div style="display:flex; justify-content: center;">
-                <button type="button" class="btn btn-success btn-lg" style="margin-top: 20px">Save Changes</button>
-            </div>
+        
+            <button class="btn btn-success btn-lg" style="margin-top: 20px" type="submit" value="Submit" name="Submit">Save Changes</button>
+        
+            
         </div>
+        </form>
+        <?php
+                if(isset($_POST['Submit'])){
+                    $changeSubscriptionType = $conn->prepare("UPDATE employer SET employer_membership_type = :subType WHERE user_ID = :userID");
+                    //may need to update the balance if person upgrades to gold
+                    $changeSubscriptionType->bindParam(':userID', $user_ID);
+                    $changeSubscriptionType->bindParam(':subType', $_POST['subscription_type']);
+                    $changeSubscriptionType->execute();
+                    header("Location: account.php");
+                }
+            ?>
     </body>
 </html>
