@@ -62,7 +62,7 @@
       <head>
         <meta charset="utf-8"> 
         <title>Login</title>
-        <link rel="stylesheet" href="loginStyle.css">
+        <link rel="stylesheet" href="LoginStyle.css">
         <style>
         .error {color: #FF0000;}
         </style>
