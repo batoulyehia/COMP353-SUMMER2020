@@ -95,11 +95,11 @@
 	insert into category (category_name, user_ID) values ('Health', 8034);
     
 /*job*/
-	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, job_description) values (44, 'Engineering', 191, 2, '2020/6/11', 'Civil Engineer', 'open', 'id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi pede malesuada in imperdiet et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor sit amet consectetuer adipiscing elit proin interdum mauris non ligula pellentesque ultrices phasellus id sapien in sapien iaculis congue vivamus metus');
-	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, job_description) values (66, 'Marketing', 681, 4, '2020/5/4', 'Content Manager', 'open', 'nullam porttitor lacus at turpis donec posuere metus vitae ipsum aliquam non mauris morbi non lectus aliquam sit amet diam in');
-	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, job_description) values (74, 'Finance', 1167, 2, '2020/5/28', 'Financial Advisor', 'open', 'pretium nisl ut volutpat sapien arcu sed augue aliquam erat volutpat in congue');
-	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, job_description) values (67, 'Arts', 5328, 5, '2019/8/31', 'Creative Director', 'open', 'ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis sapien sapien non mi integer ac neque duis bibendum morbi non quam nec dui luctus rutrum nulla tellus in sagittis dui vel nisl duis ac nibh');
-	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, job_description) values (97, 'Health', 8034, 2, '2019/9/28', 'Nurse', 'open', 'amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris laoreet ut rhoncus');
+	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, description) values (44, 'Engineering', 191, 2, '6/11/2020', 'Civil Engineer', 'open', 'id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi pede malesuada in imperdiet et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor sit amet consectetuer adipiscing elit proin interdum mauris non ligula pellentesque ultrices phasellus id sapien in sapien iaculis congue vivamus metus');
+	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, description) values (66, 'Marketing', 681, 4, '5/4/2020', 'Content Manager', 'open', 'nullam porttitor lacus at turpis donec posuere metus vitae ipsum aliquam non mauris morbi non lectus aliquam sit amet diam in');
+	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, description) values (74, 'Finance', 1167, 2, '5/28/2020', 'Financial Advisor', 'open', 'pretium nisl ut volutpat sapien arcu sed augue aliquam erat volutpat in congue');
+	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, description) values (67, 'Arts', 5328, 5, '8/31/2019', 'Creative Director', 'open', 'ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis sapien sapien non mi integer ac neque duis bibendum morbi non quam nec dui luctus rutrum nulla tellus in sagittis dui vel nisl duis ac nibh');
+	insert into job (job_ID, category_name, user_ID, num_of_workers_needed, date_posted, job_title, job_status, description) values (97, 'Health', 8034, 2, '9/28/2019', 'Nurse', 'open', 'amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris laoreet ut rhoncus');
 
 /*employee*/
 	insert into employee (user_id, employee_membership_type) values (1000, 'gold');
@@ -128,6 +128,13 @@
 	insert into updates (employee_user_ID, employer_user_ID) values (5000, 1167);
 	insert into updates (employee_user_ID, employer_user_ID) values (600, 5328);
 	insert into updates (employee_user_ID, employer_user_ID) values (8000, 8034);
+
+/*apply*/
+insert into apply (employee_user_ID, job_ID, app_status, date_applied) values (1000, 44, 'accepted', '2020-05-28');
+insert into apply (employee_user_ID, job_ID, app_status, date_applied) values (181, 66, 'accepted', '2020-01-25');
+insert into apply (employee_user_ID, job_ID, app_status, date_applied) values (5000, 67, 'accepted', '2019-08-24');
+insert into apply (employee_user_ID, job_ID, app_status, date_applied) values (600, 74, 'accepted', '2019-09-12');
+insert into apply (employee_user_ID, job_ID, app_status, date_applied) values (8000, 97, 'applied', '2020-05-11');
 
 
 

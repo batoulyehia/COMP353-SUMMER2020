@@ -37,9 +37,49 @@
       $stmt->bindParam(':valid1', $Valid1);
       $stmt->bindParam(':valid2', $Valid2);
       $stmt->execute();
+
+      $isAdmin = $isEmployer = $isEmployee = false;
+
+      //checks for admin 
+      $checkAdmin = $conn->prepare("SELECT adm.email FROM administrator adm WHERE adm.email = :valid1");
+      $checkAdmin->bindParam(':valid1', $Valid1);
+      $checkAdmin->execute();
+      if($checkAdmin->fetch()){
+        $isAdmin = true;
+      }
+
+      //checks for employer
+      $checkEmployer = $conn->prepare("SELECT e.user_ID FROM employer e LEFT JOIN user_account acc ON acc.user_ID = e.user_ID WHERE acc.email = :valid1 AND e.user_ID IS NOT NULL");
+      $checkEmployer->bindParam(':valid1', $Valid1);
+      $checkEmployer->execute();
+      if($checkEmployer->fetch()){
+        $isEmployer = true;
+      }
+
+      //checks for employee
+      $checkEmployee = $conn->prepare("SELECT e.user_ID FROM employee e LEFT JOIN user_account acc ON acc.user_ID = e.user_ID WHERE acc.email = :valid1 AND e.user_ID IS NOT NULL");
+      $checkEmployee->bindParam(':valid1', $Valid1);
+      $checkEmployee->execute();
+      if($checkEmployee->fetch()){
+        $isEmployee = true;
+      }
+
       if ($stmt->fetch()) {
         session_start();
-        header("Location: ProfilePage.php");
+        $_SESSION["user_email"] = $Valid1;
+        if($isEmployer){
+          header("Location: ../employer/home.php");
+        }
+        elseif($isAdmin){
+          header("Location: ../employer/account.php"); //need to change location, this is currently for testing
+        }
+        elseif($isEmployee){
+          header("Location: ../employer/job-description.php"); //need to change location
+        }
+        else{
+          header("Location: ../LoginPage.php");
+        }
+
       }
       else{
         $ErrorMessage1 = " Please try again."; 
