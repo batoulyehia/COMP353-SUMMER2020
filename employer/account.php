@@ -38,7 +38,7 @@
             $subs_get->bindParam(':userID', $user_ID);
             $subs_get->execute();
             $subs_array = $subs_get->fetchAll(PDO::FETCH_NUM);
-  
+
             foreach($subs_array as $sub){
                 $member = $sub[0];
             }
@@ -54,6 +54,43 @@
                 $balance = $accountDetail[0];
                 $status = $accountDetail[1];
             }
+
+            //get payment type
+
+            $getPaymentType = $conn->prepare("SELECT payment_type FROM payment_method WHERE user_ID = :userID");
+            $getPaymentType->bindParam(':userID', $user_ID);
+            $getPaymentType->execute();
+            $retrievedTypes = $getPaymentType->fetchAll(PDO::FETCH_NUM);
+            foreach($retrievedTypes as $retrievedType){
+                $paymentType = $retrievedType[0];
+            }
+
+            // GET PAYMENT INFO 
+
+            //Get credit info
+            
+            $getCreditInfo = $conn->prepare("SELECT c.credit_card_name, c.card_number, c.exp_date FROM payment_method p, credit_card c WHERE p.user_ID = :userid AND p.id_ref = c.id_ref");
+            $getCreditInfo->bindParam(':userid', $user_ID);
+            $getCreditInfo->execute();
+            if($getCreditInfo->fetch()){
+                $hasCredit = true;
+            }
+            $getCreditInfo->execute();
+            $creditDetails = $getCreditInfo->fetchAll(PDO::FETCH_NUM);
+            var_dump($creditDetails);
+
+            //get checking info
+            $getCheckingInfo = $conn->prepare("SELECT ca.name_of_assoc_acct, bank_account_num FROM payment_method p, checking_account ca WHERE p.user_ID = :userid AND p.id_ref = ca.id_ref");
+            $getCheckingInfo->bindParam(':userid', $user_ID);
+            $getCheckingInfo->execute();
+            if($getCheckingInfo->fetch()){
+                $hasChecking = true; 
+            }
+
+            $getCheckingInfo->execute();
+            $checkingDetails = $getCheckingInfo->fetchAll(PDO::FETCH_NUM);
+            
+
         ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Home</a>
@@ -80,6 +117,10 @@
                     <div>Current Balance:</div>
                     <div>Account Status:</div>
                     <div>Change Subscription</div>
+                    <br><br>
+                    <div>Payment Type</div>
+                    <br><br>
+                    <div>Payment Info</div>
                 </div>
                 
                     <div style="display: flex; flex-direction: column">
@@ -102,25 +143,67 @@
                                     Gold
                                 </label>
                             </div>
+                        </div> <br>
+                        <div class="form-check">
+                            <div>
+                                <input class="form-check-input" type="radio" name="payment_type" value="manual" <?php if($paymentType == 'manual'){ ?> checked <?php } ?> />
+                                <label class="form-check-label">
+                                    Manual
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_type" value="automatic" <?php if($paymentType == 'automatic'){ ?> checked <?php } ?> />
+                                <label class="form-check-label">
+                                    Automatic
+                                </label>
+                            </div>
                         </div>
+                        
+                        <br>
+                        <!-- Check for credit-->
+                        <?php if($hasCredit){ ?>
+                        <div>
+                            <b><u>Credit Card</u></b> <br>
+                            <?php foreach($creditDetails as $creditDetail) { ?>
+                                <div><b>Card Name:</b> <?php echo $creditDetail[0] ?></div>
+                                <div><b>Card Number:</b> <?php echo $creditDetail[1] ?></div>
+                                <div><b>Expiration Date:</b> <?php echo $creditDetail[2] ?></div>
+                                
+                            <?php } ?>
+                        </div>
+                        <?php }?>
+                        <!-- Check for checking account-->
+                        <?php if($hasCredit){ ?>
+                        <div><b><u>Checking Account</u></b>
+                            <br>
+                            <?php foreach($checkingDetails as $checkingDetail) { ?>
+                                <div><b>Card Name:</b> <?php echo $creditDetail[0] ?> </div>
+                                <div><b>Account Number:</b> <?php echo $creditDetail[1] ?> </div>
+                            <?php } ?>
+                        </div>
+                        <?php }?>
                     </div>
-
                 </div>
-        
             <button class="btn btn-success btn-lg" style="margin-top: 20px" type="submit" value="Submit" name="Submit">Save Changes</button>
-        
-            
+            <br><br>
+            <a href="new-payment.php" class="btn btn-primary btn-lg">Add New Payment</a>
         </div>
         </form>
+        
         <?php
-                if(isset($_POST['Submit'])){
-                    $changeSubscriptionType = $conn->prepare("UPDATE employer SET employer_membership_type = :subType WHERE user_ID = :userID");
-                    //may need to update the balance if person upgrades to gold
-                    $changeSubscriptionType->bindParam(':userID', $user_ID);
-                    $changeSubscriptionType->bindParam(':subType', $_POST['subscription_type']);
-                    $changeSubscriptionType->execute();
-                    header("Location: account.php");
-                }
-            ?>
+            if(isset($_POST['Submit'])){
+                $changeSubscriptionType = $conn->prepare("UPDATE employer SET employer_membership_type = :subType WHERE user_ID = :userID");
+                //may need to update the balance if person upgrades to gold
+                $changeSubscriptionType->bindParam(':userID', $user_ID);
+                $changeSubscriptionType->bindParam(':subType', $_POST['subscription_type']);
+                $changeSubscriptionType->execute();
+
+                $changePaymentType = $conn->prepare("UPDATE payment_method SET payment_type = :newType WHERE user_ID = :userID");
+                $changePaymentType->bindParam(':userID', $user_ID);
+                $changePaymentType->bindParam(':newType', $_POST['payment_type']);
+                $changePaymentType->execute();
+                header("Location: account.php");
+            }
+        ?>
     </body>
 </html>
