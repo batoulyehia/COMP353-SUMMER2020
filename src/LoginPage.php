@@ -77,7 +77,7 @@
           header("Location: ../employer/home.php");
         }
         elseif($isAdmin){
-          header("Location: ../employer/account.php"); //need to change location, this is currently for testing
+          header("Location: ../admin/home-page.php"); //need to change location, this is currently for testing
         }
         elseif($isEmployee){
           header("Location: ../employer/job-description.php"); //need to change location
