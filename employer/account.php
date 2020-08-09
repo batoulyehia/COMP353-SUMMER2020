@@ -77,7 +77,6 @@
             }
             $getCreditInfo->execute();
             $creditDetails = $getCreditInfo->fetchAll(PDO::FETCH_NUM);
-            var_dump($creditDetails);
 
             //get checking info
             $getCheckingInfo = $conn->prepare("SELECT ca.name_of_assoc_acct, bank_account_num FROM payment_method p, checking_account ca WHERE p.user_ID = :userid AND p.id_ref = ca.id_ref");

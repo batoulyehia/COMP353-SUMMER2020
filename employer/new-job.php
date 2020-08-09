@@ -3,14 +3,7 @@
  
     session_start();
     //get user_id
-    $user_ID_get = $conn->prepare("SELECT user_ID FROM user_account acc WHERE acc.email = :theEmail ");
-    $user_ID_get->bindParam(':theEmail', $theEmail);
-    $user_ID_get->execute();
-    $user_ID_array = $user_ID_get->fetchAll(PDO::FETCH_NUM);
-    
-    foreach($user_ID_array as $user_ID_el){
-        $user_ID = $user_ID_el[0]; 
-    }
+   
     
     /*
     if($_SERVER["REQUEST_METHOD" == "POST"]){
@@ -35,6 +28,11 @@ VALUES (:userID, :numworkers, :title, 'active', :jobDescription)");
     echo "Added new job successfully!";
     */
 
+    //retrieve the existing categories
+    $getCategories = $conn->prepare("SELECT category_name FROM category");
+    $getCategories->execute();
+    $categories = $getCategories->fetchAll(PDO::FETCH_NUM);
+
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +41,21 @@ VALUES (:userID, :numworkers, :title, 'active', :jobDescription)");
         <link rel="stylesheet" href="../includes/bootstrap/css/bootstrap.min.css" />
     </head>
     <body>
+
+    <?php 
+        $theEmail = $_SESSION["user_email"];
+
+         $user_ID_get = $conn->prepare("SELECT user_ID FROM user_account acc WHERE acc.email = :theEmail ");
+         $user_ID_get->bindParam(':theEmail', $theEmail);
+         $user_ID_get->execute();
+         $user_ID_array = $user_ID_get->fetchAll(PDO::FETCH_NUM);
+         
+         foreach($user_ID_array as $user_ID_el){
+             $user_ID = $user_ID_el[0]; 
+         }
+     
+         var_dump($user_ID);
+    ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Home</a>
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/view-employees.php">Users</a>
@@ -66,18 +79,50 @@ VALUES (:userID, :numworkers, :title, 'active', :jobDescription)");
                     <div>Job Description:</div>
                     <textarea class="form-control" id="jobDescription" name="jobDescription" rows="3" style="height: 180px;" ></textarea> <br><br>
                     <div>Job Category:
-                        <select class="browser-default custom-select">
-                            <option selected>Engineering</option>
-                            <option value="1">Finance</option>
+                        <select class="browser-default custom-select" name="category">
+                            <?php foreach($categories as $category) { ?>
+                            <option value="<?php echo $category[0] ?>"><?php echo $category[0] ?></option>
+                            <?php } ?>
                         </select>
                     </div>
                     <br>
-                    <label for="newCategory">Can't find your category? Enter one here: </label>
-                    <input type="text" id="newCategory" name="newCategory" class="form-control" /> <br>
                     <label for="numWorkers">Number of workers needed:</label>
                     <input type="number" id="numWorkers" name="numWorkers" min="1" class="form-control" />
+                    <button class="btn btn-primary" type="submit" value="Submit" name="Submit">Submit </button>
+
+                </form>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                    <label for="newCategory">Can't find your category? Enter one here: </label>
+                    <input type="text" id="newCategory" name="newCategory" class="form-control" /> <br>
+                    <button class="btn btn-primary" type="submit" value="SubmitCategory" name="SubmitCategory"> Submit New Category </button>
                 </form>
             </div> 
         </div>    
+        <?php
+            if(isset($_POST['SubmitCategory'])){
+                $newCategory = $_POST["newCategory"];
+                $sqlCat = "INSERT INTO category VALUES ('$newCategory', '$user_ID')";
+                $conn->exec($sqlCat);
+            }
+            if(isset($_POST['Submit'])){
+                $currentDate = date("Y-m-d");
+                $postCategory = $_POST['category'];
+                $postNumWorkers = $_POST['numWorkers'];
+                $postJobTitle = $_POST['jobTitle'];
+                $postDescription = $_POST['jobDescription'];
+                $status = 'open';
+                var_dump($user_ID);
+                $sql = "INSERT INTO job (category_name,user_ID,num_of_workers_needed, date_posted, job_title, job_status, job_description) VALUES ('$postCategory', '$user_ID', '$postNumWorkers', '$currentDate',' $postJobTitle','$status', '$postDescription')";
+                
+                try {
+                    $conn->exec($sql);
+                    header("Location: home.php");
+                } catch(PDOException $e) {
+                    echo $sql . "<br>" . $e->getMessage();
+                }
+                
+            }
+
+        ?>
     </body>
 </html>
