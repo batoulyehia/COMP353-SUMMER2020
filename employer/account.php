@@ -99,10 +99,6 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="mr-auto"></div>
                 <div style="margin-right: 20px"><?php echo $first_name, ' ', $last_name ?></div>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
             </div>
         </nav>
         <div style="max-width: fit-content;margin: auto; margin-top: 30px;padding: 20px; border: 1px solid #ccc;border-radius: 16px; font-size: 24px;">

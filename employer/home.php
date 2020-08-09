@@ -34,7 +34,7 @@
             }
 
             //get registered jobs
-            $getRegisteredJobs = $conn->prepare("SELECT job_ID, job_title, description, job_status, date_posted, num_of_workers_needed FROM job j WHERE j.user_ID = :current_ID");
+            $getRegisteredJobs = $conn->prepare("SELECT job_ID, job_title, job_description, job_status, date_posted, num_of_workers_needed, category_name FROM job j WHERE j.user_ID = :current_ID");
             $getRegisteredJobs->bindParam(':current_ID', $user_ID);
             $getRegisteredJobs->execute();
             $registeredJobs = $getRegisteredJobs->fetchAll(PDO::FETCH_NUM);
@@ -74,10 +74,6 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="mr-auto"></div>
                 <div style="margin-right: 20px"><?php echo $first_name, ' ', $last_name ?></div>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
             </div>
         </nav>
         <?php 
@@ -99,6 +95,7 @@
                 <thead>
                     <tr>
                     <th scope="col">Job ID</th>
+                    <th scope="col">Category</th>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
                     <th scope="col">Date posted</th>
@@ -110,6 +107,7 @@
                     <tr>
                         <?php foreach($registeredJobs as $registeredJob){ ?>
                         <th scope="row"><?php echo $registeredJob[0] ?></th>
+                        <th><?php echo $registeredJob[6] ?></th>
                         <td><?php echo $registeredJob[1] ?></td>
                         <td><?php echo $registeredJob[2] ?></td>
                         <td><?php echo $registeredJob[4] ?></td>
@@ -149,7 +147,7 @@
                             </select> </td>
 
                         <?php } ?>
-                        <td><button class="btn btn-primary" type="submit" value="Submit" name="Submit">Button</button></td>
+                        <td><button class="btn btn-primary" type="submit" value="Submit" name="Submit" onClick="refresh()">Button</button></td>
                         </form>
                         <?php 
                             if(isset($_POST['Submit'])){
@@ -158,7 +156,7 @@
                                 $updateApply->bindParam('e_UID', $applicationSummary[7]);
                                 $updateApply->bindParam('a_jobID', $applicationSummary[0]);
                                 $updateApply->execute(); 
-                                header("Location: home.php");
+                                echo("<meta http-equiv='refresh' content='0.1'>");
                             }
                         ?>
                     </tr> 

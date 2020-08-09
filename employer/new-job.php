@@ -42,20 +42,29 @@ VALUES (:userID, :numworkers, :title, 'active', :jobDescription)");
     </head>
     <body>
 
-    <?php 
-        $theEmail = $_SESSION["user_email"];
+        <?php 
+            $theEmail = $_SESSION["user_email"];
 
-         $user_ID_get = $conn->prepare("SELECT user_ID FROM user_account acc WHERE acc.email = :theEmail ");
-         $user_ID_get->bindParam(':theEmail', $theEmail);
-         $user_ID_get->execute();
-         $user_ID_array = $user_ID_get->fetchAll(PDO::FETCH_NUM);
-         
-         foreach($user_ID_array as $user_ID_el){
-             $user_ID = $user_ID_el[0]; 
-         }
-     
-         var_dump($user_ID);
-    ?>
+            $user_ID_get = $conn->prepare("SELECT user_ID FROM user_account acc WHERE acc.email = :theEmail ");
+            $user_ID_get->bindParam(':theEmail', $theEmail);
+            $user_ID_get->execute();
+            $user_ID_array = $user_ID_get->fetchAll(PDO::FETCH_NUM);
+            
+            foreach($user_ID_array as $user_ID_el){
+                $user_ID = $user_ID_el[0]; 
+            }
+
+            $displayName = $conn->prepare("SELECT first_name, last_name FROM user_account acc WHERE email = :theEmail ");
+            $displayName->bindParam(':theEmail', $theEmail);
+            $displayName->execute();
+
+            $fullName = $displayName->fetchAll(PDO::FETCH_NUM);
+
+            foreach($fullName as $partName){
+                $first_name = $partName[0]; //column 1
+                $last_name = $partName[1]; //column 2
+            }
+        ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Home</a>
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/view-employees.php">Users</a>
@@ -63,11 +72,7 @@ VALUES (:userID, :numworkers, :title, 'active', :jobDescription)");
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/contact.php">Contact Us</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="mr-auto"></div>
-                <div style="margin-right: 20px">Welcome, [YOUR_NAME]</div>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
+                <div style="margin-right: 20px"><?php echo $first_name, ' ', $last_name ?></div>
             </div>
         </nav>
         <div>
@@ -103,6 +108,7 @@ VALUES (:userID, :numworkers, :title, 'active', :jobDescription)");
                 $newCategory = $_POST["newCategory"];
                 $sqlCat = "INSERT INTO category VALUES ('$newCategory', '$user_ID')";
                 $conn->exec($sqlCat);
+                echo("<meta http-equiv='refresh' content='0.1'>");
             }
             if(isset($_POST['Submit'])){
                 $currentDate = date("Y-m-d");
