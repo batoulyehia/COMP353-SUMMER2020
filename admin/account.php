@@ -26,7 +26,7 @@
         ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/COMP353-SUMMER2020/admin/home-page.php">Home</a>
-            <a class="navbar-brand" href="#">User Activation/Deactivation</a>
+            <a class="navbar-brand" href="/COMP353-SUMMER2020/admin/user-activation.php">User Activation/Deactivation</a>
             <a class="navbar-brand" href="/COMP353-SUMMER2020/admin/account.php">My Account</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="mr-auto"></div>
