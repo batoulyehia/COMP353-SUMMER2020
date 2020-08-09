@@ -37,7 +37,12 @@
       $res_admin = $admin->fetchColumn();
 
       if ($res_user or $res_admin) {
-        $msg = "Your password is: " . $res;
+        if ($res_user) {
+          $msg = "Your password is: " . $res_user;
+        }
+        else {
+          $msg = "Your password is: " . $res_admin;
+        }
         $headers = "From: wxc353_1@encs.concordia.ca" . "\r\n" . "CC: wx_comp353_1@encs.concordia.ca";
         mail($Valid1,"Password Recovery",$msg, $headers);
         header("Location: LoginPage.php");
