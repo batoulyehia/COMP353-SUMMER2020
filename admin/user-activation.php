@@ -98,7 +98,7 @@
                             <td><?php echo $ActiveInformation['status']?></td>
                             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                             <td>Update Status:
-                                    <select name="status">                               <!--//echo "status" . $ActiveInformation['user_ID']-->
+                                    <select name="status">
                                     <option value="active" selected>active</option>
                                     <option value="inactive">inactive</option>
                                 </select>
@@ -109,25 +109,22 @@
                                 </div>
                             </td>
                             </form>
-                            <?php
-                                $ID = $ActiveInformation['user_ID'];
-                                if(isset($_POST["status" . $ActiveInformation['user_ID']])){                //if(isset($_POST["status" . $ActiveInformation['user_ID']])){
-                                    if(!($ActiveInformation['status'] == $_POST["status"])) {              //$_POST["status" . $ActiveInformation['user_ID']]
-
-                                        $update = "UPDATE user_account
-                                                   SET status = 'inactive'
-                                                   WHERE user_ID = $ID";
-                                        try {
-                                        $conn->exec($update);
-                                        echo("<meta http-equiv='refresh' content='0.1'>");
-                                        } catch(PDOException $e) {
-                                        echo $sql . "<br>" . $e->getMessage();
-                                        }
-                                    } else {
-                                    echo 'SAME ANSWERRRRRRRRRRRRRRRR';
+                        <?php
+                            $ID_active = $ActiveInformation['user_ID'];
+                            if(isset($_POST["status" . $ID_active])){
+                                if(!($ActiveInformation['status'] == $_POST["status"])) {
+                                    $update = "UPDATE user_account
+                                                SET status = 'inactive'
+                                                WHERE user_ID = $ID_active";
+                                    try {
+                                    $conn->exec($update);
+                                    echo("<meta http-equiv='refresh' content='0.1'>");
+                                    } catch(PDOException $e) {
+                                    echo $sql . "<br>" . $e->getMessage();
                                     }
                                 }
-                            ?>
+                            }
+                        ?>
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -153,17 +150,35 @@
                             <td><?php echo $InactiveInformation['email']?></td>
                             <td><?php echo $InactiveInformation['balance'] . "$"?></td>
                             <td><?php echo $InactiveInformation['status']?></td>
+                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                             <td>Update Status:
-                                <select name="<?php echo "status" . $ActiveInformation['user_ID'] ?>">
+                                <select name="status">
                                     <option value="active">active</option>
                                     <option value="inactive" selected>inactive</option>
                                 </select>
                             </td>
                             <td>
                                 <div style="display:flex; justify-content: center;">
-                                    <button type="button" class="btn btn-success btn-lg" style="font-size:16px;">Update</button>
+                                    <button type="submit" name="<?php echo "status" . $InactiveInformation['user_ID'] ?>" class="btn btn-success btn-lg" style="font-size:16px;">Update</button>
                                 </div>
                             </td>
+                            </form>
+                        <?php
+                            $ID_inactive = $InactiveInformation['user_ID'];
+                            if(isset($_POST["status" . $ID_inactive])){
+                                if(!($InactiveInformation['status'] == $_POST["status"])) {
+                                    $update = "UPDATE user_account
+                                                SET status = 'active'
+                                                WHERE user_ID = $ID_inactive";
+                                    try {
+                                    $conn->exec($update);
+                                    echo("<meta http-equiv='refresh' content='0.1'>");
+                                    } catch(PDOException $e) {
+                                    echo $sql . "<br>" . $e->getMessage();
+                                    }
+                                }
+                            }
+                        ?>
                     </tr>
                     <?php } ?>
                 </tbody>
