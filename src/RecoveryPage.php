@@ -22,13 +22,21 @@
    
     //Adds values to database
     if (!empty($Valid1)){
-      $stmt = $conn->prepare("SELECT password
+      $user = $conn->prepare("SELECT password
                               FROM user_account
                               WHERE email = :valid1");
-      $stmt->bindParam(':valid1', $Valid1);
-      $stmt->execute();
-      $res = $stmt->fetchColumn();
-      if ($res) {
+      $user->bindParam(':valid1', $Valid1);
+      $user->execute();
+      $res_user = $user->fetchColumn();
+
+      $admin = $conn->prepare("SELECT password
+                               FROM administrator
+                               WHERE email = :valid1");
+      $admin->bindParam(':valid1', $Valid1);
+      $admin->execute();
+      $res_admin = $admin->fetchColumn();
+
+      if ($res_user or $res_admin) {
         $msg = "Your password is: " . $res;
         $headers = "From: wxc353_1@encs.concordia.ca" . "\r\n" . "CC: wx_comp353_1@encs.concordia.ca";
         mail($Valid1,"Password Recovery",$msg, $headers);
