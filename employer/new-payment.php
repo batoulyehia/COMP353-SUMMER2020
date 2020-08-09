@@ -83,7 +83,13 @@
                 $payType = "manual";
 
                 $newPaymentCr = "INSERT INTO payment_method (user_ID, selected, payment_type) VALUES ('$user_ID', '$selected', '$payType')";
+                
+                try{
                 $conn->exec($newPaymentCr);
+                } catch(PDOException $e) {
+                    echo $newPaymentCr . "<br>" . $e->getMessage();
+                }
+                
                 //retrieve ID ref
                 $getCCIDRef = $conn->prepare("SELECT p.id_ref FROM payment_method p LEFT JOIN credit_card c ON p.id_ref = c.id_ref LEFT JOIN checking_account ch ON p.id_ref = ch.id_ref WHERE c.id_ref IS NULL AND ch.id_ref IS NULL AND user_ID = '$user_ID'");
                 $getCCIDRef->bindParam(':userID',$user_ID);
@@ -94,14 +100,19 @@
                 }
 
                 $newCredit = "INSERT INTO credit_card VALUES ('$creditNumber', '$ccIDRef','$creditCVC', '$creditName','$expDate')";
-                $conn->exec($newCredit);
-
+                try{
+                    $conn->exec($newCredit);
+                } catch(PDOException $e) {
+                    echo $newCredit . "<br>" . $e->getMessage();
+                }
+                header("Location: account.php");
             }
             if(isset($_POST['SubmitChecking'])){
                 
                 $selected = 0;
                 $payType = "manual";
-                $newPaymentCh = "INSERT INTO payment_method (user_ID, selected, payment_type) VALUES ('$user_ID', $selected, '$payType')";
+                $insertUID = $user_ID + 0;
+                $newPaymentCh = "INSERT INTO payment_method (user_ID, selected, payment_type) VALUES ($insertUID, $selected, '$payType')";
                 
                 try{
                 $conn->exec($newPaymentCh);
@@ -121,7 +132,9 @@
                 $accNum = $_POST['accNum'];
                 $accName = $_POST['accName'];
                 $newCheck = "INSERT INTO checking_account VALUES ('$accNum','$chIDRef','$accName')";
-                $conn->exec($newPaymentCh);
+                $conn->exec($newCheck);
+
+                header("Location: account.php");
             }
         ?>
     </body>

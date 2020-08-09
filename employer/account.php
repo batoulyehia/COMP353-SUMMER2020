@@ -176,8 +176,8 @@
                         <div><b><u>Checking Account</u></b>
                             <br>
                             <?php foreach($checkingDetails as $checkingDetail) { ?>
-                                <div><b>Card Name:</b> <?php echo $creditDetail[0] ?> </div>
-                                <div><b>Account Number:</b> <?php echo $creditDetail[1] ?> </div>
+                                <div><b>Card Name:</b> <?php echo $checkingDetail[0] ?> </div>
+                                <div><b>Account Number:</b> <?php echo $checkingDetail[1] ?> </div>
                             <?php } ?>
                         </div>
                         <?php }?>
@@ -201,7 +201,7 @@
                 $changePaymentType->bindParam(':userID', $user_ID);
                 $changePaymentType->bindParam(':newType', $_POST['payment_type']);
                 $changePaymentType->execute();
-                header("Location: account.php");
+                echo("<meta http-equiv='refresh' content='0.1'>");
             }
         ?>
     </body>
