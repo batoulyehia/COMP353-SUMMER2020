@@ -69,7 +69,7 @@
 
             //Get credit info
             
-            $getCreditInfo = $conn->prepare("SELECT c.credit_card_name, c.card_number, c.exp_date FROM payment_method p, credit_card c WHERE p.user_ID = :userid AND p.id_ref = c.id_ref");
+            $getCreditInfo = $conn->prepare("SELECT c.credit_card_name, c.card_number, c.exp_date, c.id_ref, p.selected FROM payment_method p, credit_card c WHERE p.user_ID = :userid AND p.id_ref = c.id_ref");
             $getCreditInfo->bindParam(':userid', $user_ID);
             $getCreditInfo->execute();
             if($getCreditInfo->fetch()){
@@ -79,7 +79,7 @@
             $creditDetails = $getCreditInfo->fetchAll(PDO::FETCH_NUM);
 
             //get checking info
-            $getCheckingInfo = $conn->prepare("SELECT ca.name_of_assoc_acct, bank_account_num FROM payment_method p, checking_account ca WHERE p.user_ID = :userid AND p.id_ref = ca.id_ref");
+            $getCheckingInfo = $conn->prepare("SELECT ca.name_of_assoc_acct, bank_account_num, ca.id_ref, p.selected FROM payment_method p, checking_account ca WHERE p.user_ID = :userid AND p.id_ref = ca.id_ref");
             $getCheckingInfo->bindParam(':userid', $user_ID);
             $getCheckingInfo->execute();
             if($getCheckingInfo->fetch()){
@@ -164,7 +164,16 @@
                                 <div><b>Card Number:</b> <?php echo $creditDetail[1] ?></div>
                                 <div><b>Expiration Date:</b> <?php echo $creditDetail[2] ?></div>
                                 
-                            <?php } ?>
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" name="choosePayment" value="<?php echo $creditDetail[3] ?>" <?php if($creditDetail[4] == 1){ ?> checked <?php } ?> />
+                                <label class="form-check-label">
+                                    Select this payment
+                                </label>
+                            </div>
+
+
+                            <?php 
+                            } ?>
                         </div>
                         <?php }?>
                         <!-- Check for checking account-->
@@ -174,8 +183,17 @@
                             <?php foreach($checkingDetails as $checkingDetail) { ?>
                                 <div><b>Card Name:</b> <?php echo $checkingDetail[0] ?> </div>
                                 <div><b>Account Number:</b> <?php echo $checkingDetail[1] ?> </div>
-                            <?php } ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="choosePayment" value="<?php echo $checkingDetail[2] ?>"  <?php if($checkingDetail[3] == 1){ ?> checked <?php } ?> />
+                                    
+                                    <label class="form-check-label">
+                                        Select this Payment
+                                    </label>
+                                </div>
+                            <?php
+                        } ?>
                         </div>
+
                         <?php }?>
                     </div>
                 </div>
@@ -197,6 +215,22 @@
                 $changePaymentType->bindParam(':userID', $user_ID);
                 $changePaymentType->bindParam(':newType', $_POST['payment_type']);
                 $changePaymentType->execute();
+
+                //change between payments
+                //set the payment with refid == 1 to 0
+                //then update the current one to 1
+
+                $setZero = $conn->prepare("UPDATE payment_method SET selected = 0 WHERE user_ID = :userID");
+                $setZero->bindParam(':userID', $user_ID);
+                $setZero->execute();
+
+
+                
+                $changePayment = $conn->prepare("UPDATE payment_method SET selected = 1 WHERE id_ref = :idRef");
+                $changePayment->bindParam(':idRef', $_POST['choosePayment']);
+
+                $changePayment->execute();
+                
                 echo("<meta http-equiv='refresh' content='0.1'>");
             }
         ?>
