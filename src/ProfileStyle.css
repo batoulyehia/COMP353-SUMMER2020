@@ -1,0 +1,66 @@
+/* Top div*/
+.top {
+    padding: 80px;
+    background-color: yellow;
+}
+
+
+.Options\&Notif{
+    float: left;
+    padding: 20px;
+    background-color: deepskyblue;
+}
+
+.Avatar{
+    float: left;
+    padding: 20px;
+    background-color: mediumspringgreen;
+}
+
+.Stats{
+    float: left;
+    padding: 20px;
+    background-color: chartreuse;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Bottom Div*/
+
+.bottom {
+    background-color: #b3b3b3;
+}
+
+.navbar {
+    overflow: hidden;
+    background-color: #666666;
+    padding: 100px;
+    text-align: center;
+}
+
+.navbar a {
+    text-decoration: none;
+    padding: 20%;
+    color: black;
+    background-color: beige;
+}
+
+
+.RecentAssignments {
+    padding: 50px;
+    text-align: center;
+}

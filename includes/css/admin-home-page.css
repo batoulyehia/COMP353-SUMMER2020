@@ -1,0 +1,9 @@
+.employeeListTitle,.employeeList, .employerList, .employerListTitle, .postedJobsTitle, .postedJobs, .appliedJobsTitle, .appliedJobs, .offersGivenTitle, .offersGiven{
+    display:none;
+}
+.employeeListTitle.show,.employeeList.show, .employerList.show, .employerListTitle.show, .postedJobsTitle.show, .postedJobs.show, .appliedJobsTitle.show, .appliedJobs.show, .offersGivenTitle.show, .offersGiven.show{
+    display:block;
+}
+
+
+
