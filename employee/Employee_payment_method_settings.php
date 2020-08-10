@@ -1,11 +1,12 @@
-<!DOCTYPE php>
-<php lang="en">
-
 <?php 
     require '../src/DatabaseConnection.php';    
     session_start();
     
 ?>
+<!DOCTYPE php>
+<php lang="en">
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

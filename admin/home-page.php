@@ -91,7 +91,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?php echo $totalEmployees['COUNT(*)'] ?></td>
+                        <td><?php echo $totalEmployers['COUNT(*)'] ?></td>
                         <td><?php echo $totalEmployees['COUNT(*)'] ?></td>
                     </tr>
                 </tbody>

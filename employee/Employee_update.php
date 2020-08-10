@@ -9,7 +9,11 @@
         $result= mysqli_query($conn,$query);
 
         if($result){
-            header("location:Employee_profile_settings.php");
+            ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_profile_settings.php';
+                </script>
+            <?php  
         }
         else{
             echo 'PLease check your query!';
@@ -17,6 +21,10 @@
     }
     else{
 
-        header("location:Employee_homepage.php");
+        ?>
+            <script type="text/javascript">
+                window.location.href = '../employee/Employee_homepage.php';
+            </script>
+        <?php  
     }
 ?>

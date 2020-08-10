@@ -122,7 +122,11 @@ VALUES (:userID, :numworkers, :title, 'active', :jobDescription)");
                 
                 try {
                     $conn->exec($sql);
-                    header("Location: home.php");
+                    ?>
+                    <script type="text/javascript">
+                      window.location.href = '../employer/home.php';
+                    </script>
+                  <?php  
                 } catch(PDOException $e) {
                     echo $sql . "<br>" . $e->getMessage();
                 }

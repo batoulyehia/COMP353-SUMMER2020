@@ -101,7 +101,11 @@
                 } catch(PDOException $e) {
                     echo $newCredit . "<br>" . $e->getMessage();
                 }
-                header("Location: account.php");
+                ?>
+                <script type="text/javascript">
+                  window.location.href = '../employer/account.php';
+                </script>
+              <?php  
             }
             if(isset($_POST['SubmitChecking'])){
                 
@@ -130,7 +134,11 @@
                 $newCheck = "INSERT INTO checking_account VALUES ('$accNum','$chIDRef','$accName')";
                 $conn->exec($newCheck);
 
-                header("Location: account.php");
+                ?>
+                <script type="text/javascript">
+                  window.location.href = '../employer/account.php';
+                </script>
+              <?php  
             }
         ?>
     </body>

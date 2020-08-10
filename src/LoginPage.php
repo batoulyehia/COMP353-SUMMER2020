@@ -1,4 +1,6 @@
-<?php require 'DatabaseConnection.php'; ?>
+<?php require 'DatabaseConnection.php'; 
+  session_start();
+?>
 
 <?php
   $Valid1 = $Valid2 = "";
@@ -65,19 +67,33 @@
       }
 
       if ($stmt->fetch()) {
-        session_start();
         $_SESSION["user_email"] = $Valid1;
         if($isEmployer){
-          header("Location: ../employer/home.php");
-        }
+          ?>
+            <script type="text/javascript">
+              window.location.href = '../employer/home.php';
+            </script>
+          <?php        }
         elseif($isAdmin){
-          header("Location: ../admin/home-page.php"); //need to change location, this is currently for testing
+          ?>
+          <script type="text/javascript">
+          window.location.href = '../admin/home-page.php';
+          </script>
+          <?php
         }
         elseif($isEmployee){
-          header("Location: ../employee/Employee_homepage.php"); //need to change location
+          ?>
+            <script type="text/javascript">
+              window.location.href = '../employee/Employee_homepage.php';
+            </script>
+          <?php
         }
         else{
-          header("Location: ../LoginPage.php");
+          ?>
+            <script type="text/javascript">
+              window.location.href = '../src/LoginPage.php';
+            </script>
+          <?php        
         }
 
       }

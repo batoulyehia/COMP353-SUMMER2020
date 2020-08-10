@@ -45,7 +45,11 @@
         }
         $headers = "From: wxc353_1@encs.concordia.ca" . "\r\n" . "CC: wx_comp353_1@encs.concordia.ca";
         mail($Valid1,"Password Recovery",$msg, $headers);
-        header("Location: LoginPage.php");
+        ?>
+          <script type="text/javascript">
+            window.location.href = '../src/LoginPage.php';
+          </script>
+        <?php
       }
       else{
         $ErrorMessage1 = " Please try again."; 

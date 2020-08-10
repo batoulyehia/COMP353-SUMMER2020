@@ -13,7 +13,11 @@ $connect= mysqli_connect($hostname,$username,$password,$databaseName);
      
         
         $message = "Record Modified Successfully";
-        header("Location: Employee_homepage.php"); //change to login page
+        ?>
+            <script type="text/javascript">
+                window.location.href = '../src/LoginPage.php';
+            </script>
+        <?php   //change to login page
         }
         $result = mysqli_query($connect,"SELECT * FROM user_account ua,employee e,payment_method pm WHERE ua.user_ID='" . $_GET['user_ID'] . "' AND ua.user_ID=e.user_ID AND ua.user_ID=pm.user_ID" );
         // $result = mysqli_query($connect,"SELECT * FROM user_account ua, e employee WHERE user_ID='" . $_GET['user_ID'] . "' AND ua.user_ID=e.user_ID");

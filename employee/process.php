@@ -1,6 +1,4 @@
 <?php
-
-
 require '../src/DatabaseConnection.php';    
 session_start();
 
@@ -44,8 +42,11 @@ session_start();
            
             $pay_now->execute();
     
-            header("location:Employee_homepage.php");
-        
+            ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_homepage.php';
+                </script>
+            <?php  
         }
        
 
@@ -62,7 +63,11 @@ session_start();
       $sql = "DELETE FROM  apply  WHERE employee_user_ID=$user_ID AND job_ID=$give_offer_job_ID";
       if (mysqli_query($connect, $sql)) {
           
-          header("Location: Employee_homepage.php");
+        ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_homepage.php';
+                </script>
+ <?php  
       } else {
           echo "Error: " . $sql . "
   " . mysqli_error($connect);
@@ -77,7 +82,11 @@ session_start();
          SET app_status='accepted' WHERE employee_user_ID=$user_ID";
          if (mysqli_query($connect, $sql)) {
              
-             header("Location: Employee_homepage.php");
+             ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_homepage.php';
+                </script>
+ <?php  
          } else {
              echo "Error: " . $sql . "
      " . mysqli_error($connect);
@@ -101,7 +110,11 @@ session_start();
             VALUES ('$user_ID','$je2_job_ID','applied','2020-08-09')  ";
             if (mysqli_query($connect, $sql)) {
             echo "New record created successfully !";
-            header("Location: Employee_homepage.php");
+            ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_homepage.php';
+                </script>
+ <?php  
             } else {
             echo "Error: " . $sql . "
         " . mysqli_error($connect);
@@ -121,7 +134,11 @@ session_start();
         $sql = "UPDATE apply SET app_status='withdrawn'  WHERE employee_user_ID=$user_ID AND job_ID=$je_job_ID";
         if (mysqli_query($connect, $sql)) {
             
-            header("Location: Employee_homepage.php");
+            ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_homepage.php';
+                </script>
+ <?php  
         } else {
             echo "Error: " . $sql . "
     " . mysqli_error($connect);
@@ -166,7 +183,11 @@ if(isset($_POST['add_card']))
         } catch(PDOException $e) {
             echo $newCredit . "<br>" . $e->getMessage();
         }
-        header("Location: Employee_homepage.php");
+        ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_homepage.php';
+                </script>
+ <?php  
     
      
 
@@ -200,7 +221,11 @@ else if(isset($_POST['add_ca'])){
                 $newCheck = "INSERT INTO checking_account VALUES ('$bank_account_num','$chIDRef','$full_name')";
                 $conn->exec($newCheck);
 
-                header("location: Employee_homepage.php");
+                ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_homepage.php';
+                </script>
+ <?php  
     
 
 }
@@ -211,7 +236,7 @@ else if(isset($_POST['add_ca'])){
 //     $sql = "DELETE FROM credit_card WHERE  card_number='$r_card_number'";
 //     if (mysqli_query($connect, $sql)) {
 //        echo "New record created successfully !";
-//        header("Location: Employee_homepage.php");
+//         
 //     } else {
 //        echo "Error: " . $sql . "
 // " . mysqli_error($connect);
@@ -240,7 +265,7 @@ else if(isset($_POST['add_ca'])){
 
 //     if (mysqli_query($connect, $sql)) {
 //        echo "New record created successfully !";
-//        header("Location: Employee_homepage.php");
+
 //     } else {
 //        echo "Error: " . $sql . "
 // " . mysqli_error($connect);
@@ -281,7 +306,11 @@ else if(isset($_POST['p_ca'])){
     $setSelectedCA->execute();
 
     echo "New record created successfully !";
-    header("Location: Employee_homepage.php");
+    ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_homepage.php';
+                </script>
+ <?php  
 
     
 
@@ -290,7 +319,7 @@ else if(isset($_POST['p_ca'])){
 //     VALUES ('$bank_account_num ','$name_of_assoc_acct')";
 //     if (mysqli_query($connect, $sql)) {
 //        echo "New record created successfully !";
-//        header("Location: Employee_homepage.php");
+//   
 //     } else {
 //        echo "Error: " . $sql . "
 // " . mysqli_error($connect);
@@ -329,7 +358,11 @@ elseif(isset($_POST['p_c'])){
        $setSelectedCC->execute();
    
        echo "New record created successfully !";
-       header("Location: Employee_homepage.php");
+       ?>
+                <script type="text/javascript">
+                    window.location.href = '../employee/Employee_homepage.php';
+                </script>
+ <?php  
 
 }
 

@@ -1,10 +1,10 @@
+<?php
+  require '../src/DatabaseConnection.php';    
+  session_start();
+?>
 <!DOCTYPE php>
 <php lang="en">
 <?php 
-require '../src/DatabaseConnection.php';    
-session_start();
-
-    
 
       $hostname="wxc353.encs.concordia.ca";
       $username="wxc353_1";

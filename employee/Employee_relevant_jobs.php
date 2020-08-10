@@ -1,9 +1,10 @@
-<!DOCTYPE php>
-<php lang="en">
 <?php 
     require '../src/DatabaseConnection.php';    
     session_start();
 ?>
+<!DOCTYPE php>
+<php lang="en">
+
 
 
 <head>

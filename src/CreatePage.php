@@ -52,7 +52,11 @@
       } catch(PDOException $e) {
         echo $sql . "<br>" . $e->getMessage();
       }
-      header("Location: LoginPage.php");
+      ?>
+        <script type="text/javascript">
+          window.location.href = '../src/LoginPage.php';
+        </script>
+      <?php 
     }
   }
 ?>
