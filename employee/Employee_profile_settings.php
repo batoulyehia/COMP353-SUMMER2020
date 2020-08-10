@@ -6,10 +6,10 @@ session_start();
 
     
 
-      $hostname="localhost";
-      $username="root";
-      $password="";
-      $databaseName="final_test";
+      $hostname="wxc353.encs.concordia.ca";
+      $username="wxc353_1";
+      $password="DBSU2020";
+      $databaseName="wxc353_1";
       $email= $_SESSION["user_email"];
       
 

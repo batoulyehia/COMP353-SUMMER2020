@@ -1,8 +1,8 @@
 <?php
-$hostname="localhost";
-$username="root";
-$password="";
-$databaseName="final_test";
+$hostname="wxc353.encs.concordia.ca";
+$username="wxc353_1";
+$password="DBSU2020";
+$databaseName="wxc353_1";
 $connect= mysqli_connect($hostname,$username,$password,$databaseName);
 
         if(count($_POST)>0) {
