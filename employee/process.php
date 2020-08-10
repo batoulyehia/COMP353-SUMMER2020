@@ -36,6 +36,22 @@ $hostname="localhost";
         $full_name=$first_name." ".$last_name;
         
 
+
+        //PAY NOW
+        if(isset($_POST['pay_now'])){
+            
+
+            $pay_now= $conn->prepare("UPDATE  user_account SET balance='0.0' WHERE user_ID=$user_ID ");
+           
+            $pay_now->execute();
+    
+            header("location:Employee_homepage.php");
+        
+        }
+       
+
+
+
       //change application status to reject
       if(isset($_POST['reject']))
       {	 
@@ -114,6 +130,8 @@ $hostname="localhost";
         mysqli_close($connect);
 
        }
+
+
 
 
 if(isset($_POST['add_card']))
@@ -280,7 +298,7 @@ else if(isset($_POST['p_ca'])){
 //     }
 //     mysqli_close($connect);
 }
-else if(isset($_POST['p_c'])){
+elseif(isset($_POST['p_c'])){
     $s_credit_card_number = $_POST['s_credit_card_number'];
     
 
@@ -315,4 +333,7 @@ else if(isset($_POST['p_c'])){
        header("Location: Employee_homepage.php");
 
 }
+
+
+
 ?>
