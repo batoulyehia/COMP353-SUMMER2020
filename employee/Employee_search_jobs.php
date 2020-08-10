@@ -8,7 +8,7 @@
     $hostname="localhost";
     $username="root";
     $password="";
-    $databaseName="login";
+    $databaseName="final_test";
 
     $connect= mysqli_connect($hostname,$username,$password,$databaseName);
     $query=" SELECT category_name from category";

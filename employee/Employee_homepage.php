@@ -1,7 +1,7 @@
 <!DOCTYPE php>
 <php lang="en">
 <?php 
-    require 'DatabaseConnection.php'; 
+    require '../src/DatabaseConnection.php';    
     session_start();
 ?>
 <head>

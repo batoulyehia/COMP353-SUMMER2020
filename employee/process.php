@@ -1,15 +1,14 @@
 <?php
 
 
-    require 'DatabaseConnection.php'; 
-    session_start();
-
+require '../src/DatabaseConnection.php';    
+session_start();
 
 // include_once 'database.php';
 $hostname="localhost";
       $username="root";
       $password="";
-      $databaseName="login";
+      $databaseName="final_test";
        
       $connect= mysqli_connect($hostname,$username,$password,$databaseName);
 
@@ -119,7 +118,7 @@ $hostname="localhost";
           echo $je_job_ID;
           
            
-        $sql = "DELETE FROM  apply  WHERE employee_user_ID=$user_ID AND job_ID=$je_job_ID";
+        $sql = "UPDATE apply SET app_status='withdrawn'  WHERE employee_user_ID=$user_ID AND job_ID=$je_job_ID";
         if (mysqli_query($connect, $sql)) {
             
             header("Location: Employee_homepage.php");

@@ -1,15 +1,15 @@
 <!DOCTYPE php>
 <php lang="en">
 <?php 
-    require 'DatabaseConnection.php'; 
-    session_start();
+require '../src/DatabaseConnection.php';    
+session_start();
 
     
 
       $hostname="localhost";
       $username="root";
       $password="";
-      $databaseName="login";
+      $databaseName="final_test";
       $email= $_SESSION["user_email"];
       
 

@@ -2,7 +2,7 @@
 $hostname="localhost";
 $username="root";
 $password="";
-$databaseName="login";
+$databaseName="final_test";
 $connect= mysqli_connect($hostname,$username,$password,$databaseName);
 
         if(count($_POST)>0) {

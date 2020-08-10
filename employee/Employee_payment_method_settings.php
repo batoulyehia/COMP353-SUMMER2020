@@ -2,7 +2,7 @@
 <php lang="en">
 
 <?php 
-    require 'DatabaseConnection.php'; 
+    require '../src/DatabaseConnection.php';    
     session_start();
     
 ?>
@@ -24,7 +24,7 @@
  $hostname="localhost";
  $username="root";
  $password="";
- $databaseName="login";
+ $databaseName="final_test";
 $connect= mysqli_connect($hostname,$username,$password,$databaseName);
 
 
@@ -440,7 +440,7 @@ $connect= mysqli_connect($hostname,$username,$password,$databaseName);
   $hostname="localhost";
   $username="root";
   $password="";
-  $databaseName="login";
+  $databaseName="final_test";
 
   $connect= mysqli_connect($hostname,$username,$password,$databaseName);
   if(isset($_POST['savechanges'])){

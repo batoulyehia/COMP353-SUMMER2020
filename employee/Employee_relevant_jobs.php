@@ -1,7 +1,7 @@
 <!DOCTYPE php>
 <php lang="en">
 <?php 
-    require 'DatabaseConnection.php'; 
+    require '../src/DatabaseConnection.php';    
     session_start();
 ?>
 
@@ -305,8 +305,7 @@
                     <?php } ?>
                     <?php if($give_offer_employee_user_ID=$user_ID && $give_offer_job_id!="") {echo "OFFER GIVEN BY "; echo "JOB ID:". $give_offer_job_id ; ?>
 
-
-                        <?php if($employee_membership_type!="basic" ){ ?>
+                        <?php if($employee_membership_type!="basic" && $je_app_status == "applied"){ ?>
                             <form action="process.php" method="POST">
                                 <td><button class="btn btn-outline-success " name="accept"  >Accept</button></td>
                             </form>

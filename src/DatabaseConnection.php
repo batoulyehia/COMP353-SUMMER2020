@@ -4,7 +4,7 @@ $username = "root";                         //"wxc353_1";
 $password = "";                             //"";
 
 try {
-  $conn = new PDO("mysql:host=$servername;dbname=login", $username, $password);                  //wxc353_1
+  $conn = new PDO("mysql:host=$servername;dbname=final_test", $username, $password);                  //wxc353_1
   // set the PDO error mode to exception
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
