@@ -8,7 +8,7 @@
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Home</a>
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/view-employees.php">Users</a>
             <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/account.php">My Account</a>
-            <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/home.php">Contact Us</a>
+            <a class="navbar-brand" href="/COMP353-SUMMER2020/employer/contact.php">Contact Us</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="mr-auto"></div>
                 <div style="margin-right: 20px">Welcome, [YOUR_NAME]</div>
