@@ -100,12 +100,21 @@
     <div class="row align-items-end">
         <div class="col-6">
            
+           <?php if($balance>=0) {  ?>
             <a href="Employee_search_jobs.php" class="btn btn-outline-primary" role="button">Search Jobs</a>
-        </div>
-        <!-- <div class="col-6">
-            <a href="#" class="btn btn-outline-success" role="button">Status Of Applied Jobs</a>
+
+           <?php } else { echo "<p class='display-4'>YOU HAVE A NEGATIVE BALANCE</p>"; ?>
             
-        </div> -->
+            <form action="process.php" method="POST">
+                <button class="btn btn-lg btn-primary" name="pay_now" role="button" > PAY NOW</button>
+            
+            </form>
+            <!-- <a href="process.php" class="btn btn-primary" name="pay_now" role="button">Pay Now</a> -->
+
+           <?php } ?>
+
+        </div>
+    
        
     </div>
    </div>
